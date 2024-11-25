@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice-Controlled Workout App</title>
+  <!-- Add Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 24px;
+      }
+    }
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .button-group .btn {
+      flex: 1;
+      min-width: 120px;
+    }
+    #status {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    #exerciseTable {
+      width: 100%;
+      overflow-x: auto;
+    }
+    @media (max-width: 576px) {
+      #exerciseTable th, #exerciseTable td {
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+    #advice-container {
+      position: relative;
+    }
+  </style>
+  <script>
+    let awaitingConfirmation = false;
+    let muscleGroup = '';
+    let recognition;
+    let conversationHistory = []; // Add this line to store conversation history
+
+    // Function to handle voice input using Web Speech API
+    function startConversation() {
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = function() {
+        console.log('Listening...');
+        document.getElementById("status").textContent = "Listening...";
+      };
+
+      recognition.onspeechend = function() {
+        console.log('Stopped listening.');
+        document.getElementById("status").textContent = "Processing...";
+      };
+
+      recognition.onresult = async function(event) {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        console.log('You said: ', transcript);
+        document.getElementById("status").textContent = "Processing...";
+
+        if (awaitingConfirmation) {
+          handleConfirmation(transcript);
+        } else {
+          await handleWorkoutRequest(transcript);
+        }
+
+        // Wait for 1 second before listening again
+        setTimeout(() => {
+          recognition.start();
+        }, 1000);
+      };
+
+      recognition.onerror = function(event) {
+        console.error('Speech recognition error: ', event.error);
+        document.getElementById("status").textContent = "Error. Click 'Begin Conversation' to try again.";
+      };
+
+      recognition.start();
+    }
+
+    // Function to handle workout request
+    async function handleWorkoutRequest(request) {
+      let extractedMuscleGroup = request.match(/(?:workout|train|exercise) my (.*)/)?.[1]; // Extract muscle group
+
+      if (extractedMuscleGroup) {
+        muscleGroup = extractedMuscleGroup;
+        // Confirm the muscle group with the user
+        const confirmation = `You want to workout your ${muscleGroup}, is that correct? Please say 'yes' or 'no'.`;
+        updateConversationHistory('User', request);
+        updateConversationHistory('Trainer', confirmation);
+        awaitingConfirmation = true;
+      } else if (!awaitingConfirmation) {
+        // If not awaiting confirmation and no muscle group extracted, ask for specification
+        const response = "Please specify a muscle group.";
+        updateConversationHistory('User', request);
+        updateConversationHistory('Trainer', response);
+      } else {
+        // If awaiting confirmation and user provides a muscle group directly
+        muscleGroup = request.trim().toLowerCase();
+        updateConversationHistory('User', request);
+        fetchExercisesForMuscleGroup(muscleGroup);
+        awaitingConfirmation = false;
+      }
+    }
+
+    // Function to handle yes/no confirmation
+    function handleConfirmation(response) {
+      updateConversationHistory('User', response);
+      if (response === 'yes') {
+        fetchExercisesForMuscleGroup(muscleGroup);
+      } else if (response === 'no') {
+        const message = "Please specify a muscle group.";
+        updateConversationHistory('Trainer', message);
+        awaitingConfirmation = false;
+      } else {
+        const message = "Please respond with 'yes' or 'no'.";
+        updateConversationHistory('Trainer', message);
+      }
+    }
+
+    // Function to update the conversation history
+    function updateConversationHistory(speaker, message) {
+      conversationHistory.push({ speaker, message });
+      displayConversationHistory();
+    }
+
+    // Function to display the conversation history
+    function displayConversationHistory() {
+      const adviceDiv = document.getElementById("advice");
+      adviceDiv.innerHTML = '<h3>Conversation History:</h3>';
+      const historyList = document.createElement('ul');
+      historyList.style.listStyleType = 'none';
+      historyList.style.padding = '0';
+
+      conversationHistory.forEach(entry => {
+        const listItem = document.createElement('li');
+        listItem.style.marginBottom = '10px';
+        listItem.innerHTML = `<strong>${entry.speaker}:</strong> ${entry.message}`;
+        historyList.appendChild(listItem);
+      });
+
+      adviceDiv.appendChild(historyList);
+    }
+
+    // Function to fetch exercises from the backend and display them in a table
+    async function fetchExercisesForMuscleGroup(muscleGroup) {
+      try {
+        const response = await fetch('/api/get-exercises', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ muscleGroup }),
+        });
+
+        const data = await response.json();
+        displayExercisesInTable(data.exercises); // Display exercises in table
+      } catch (error) {
+        console.error('Error fetching exercises:', error);
+        document.getElementById("advice").textContent = "An error occurred while fetching exercises.";
+      }
+    }
+
+    // Function to display exercises in a table
+    function displayExercisesInTable(exercises) {
+      const table = document.getElementById("exerciseTable");
+      table.innerHTML = ''; // Clear previous entries
+
+      // Add headers to the table
+      const headerRow = table.insertRow();
+      const headers = ['Exercise Name', 'Sets', 'Reps'];
+      headers.forEach(headerText => {
+        const headerCell = document.createElement("th");
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
+      });
+
+      // Add each exercise to the table
+      exercises.forEach(exercise => {
+        const row = table.insertRow();
+        const nameCell = row.insertCell(0);
+        const setsCell = row.insertCell(1);
+        const repsCell = row.insertCell(2);
+
+        nameCell.textContent = exercise.name;
+        setsCell.textContent = exercise.sets;
+        repsCell.textContent = exercise.reps;
+      });
+
+      const message = "Here are some exercises for your " + muscleGroup;
+      updateConversationHistory('Trainer', message);
+      
+      // End the conversation after displaying the exercises
+      stopConversation();
+    }
+
+    // Add a new function to stop the conversation
+    function stopConversation() {
+      if (recognition) {
+        recognition.stop();
+        const message = "We're done here. Click 'Begin Conversation' to start talking again.";
+        document.getElementById("status").textContent = message;
+        awaitingConfirmation = false; // Reset the confirmation state
+        muscleGroup = ''; // Reset the muscle group
+      }
+    }
+
+    // Add a new function to clear the conversation history
+    function clearConversationHistory() {
+      conversationHistory = [];
+      displayConversationHistory();
+      clearExerciseTable(); // Add this line to clear the exercise table
+    }
+
+    // Add a new function to clear the exercise table
+    function clearExerciseTable() {
+      const table = document.getElementById("exerciseTable");
+      table.innerHTML = ''; // Clear the table content
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4 mb-4">Voice-Controlled Workout App</h1>
+    <div class="button-group">
+      <button onclick="startConversation()" class="btn btn-success">Begin Conversation</button>
+      <button onclick="stopConversation()" class="btn btn-danger">End Conversation</button>
+      <button onclick="clearConversationHistory()" class="btn btn-primary">Clear History</button>
+    </div>
+
+    <h2 class="mt-4">Workout Advice:</h2>
+    <div id="advice-container" class="card mb-4">
+      <div class="card-body d-flex align-items-center">
+        <img id="avatarImage" src="listening.png" alt="Avatar" style="width: 100px; height: auto; margin-right: 20px;">
+        <div>
+          <div id="status" class="badge bg-secondary">Ready</div>
+          <div id="advice">Your instructions will appear here.</div>
+          <div id="loader" style="display: none;">🤖 Processing...</div>
+        </div>
+      </div>
+    </div>
+    
+    
+
+    <h2>Exercises:</h2>
+    <div class="table-responsive">
+      <table id="exerciseTable" class="table table-striped">
+        <!-- Table content will be dynamically added here -->
+      </table>
+    </div>
+  </div>
+
+  <!-- Add Bootstrap JavaScript and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script src="frontend.js"></script>
+</body>
+</html>
