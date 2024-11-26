@@ -10,8 +10,7 @@ dotenv.config();
 
 // Initialize OpenAI with the API Key
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "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",
-});
+  apiKey: process.env.OPENAI_API_KEY});
 
 // RapidAPI key for ExerciseDB
 const rapidAPIKey = process.env.RAPIDAPI_KEY || "b879d11251msh88027762c2be948p1ce5c6jsne682a29c0415";
