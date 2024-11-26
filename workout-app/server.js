@@ -8,14 +8,13 @@ import axios from "axios";
 
 dotenv.config();
 
-// Use GitHub Actions Secrets in production
+// Initialize OpenAI with the API Key
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "fallback_api_key_here",
+  apiKey: process.env.OPENAI_API_KEY || "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",
 });
 
-// Use the RapidAPI key
-const rapidAPIKey = process.env.RAPIDAPI_KEY || "fallback_rapid_api_key";
-
+// RapidAPI key for ExerciseDB
+const rapidAPIKey = process.env.RAPIDAPI_KEY || "b879d11251msh88027762c2be948p1ce5c6jsne682a29c0415";
 
 const app = express();
 const port = process.env.PORT || 5002;
@@ -67,7 +66,7 @@ const getRandomPrompt = (promptArray) => {
   return promptArray[index];
 };
 
-// Route to handle personalized workout creation with motivational interviewing
+// Endpoint: Create workout plan with OpenAI
 app.post("/api/create-workout", async (req, res) => {
   const { userId, fitnessGoal, userResponse } = req.body;
 
@@ -108,26 +107,26 @@ app.post("/api/create-workout", async (req, res) => {
       updateUserProfile(userId, { userResponse });
     }
 
-    res.json({
-      state: "talking", // Indicate the AI is responding
-      response: personalizedResponse,
-    });
+    res.json({ state: "talking", response: personalizedResponse });
   } catch (error) {
-    console.error("Error creating workout:", error.message);
+    console.error("Error creating workout:", error.response?.data || error.message);
     res.status(500).json({ error: "Failed to process the workout program.", state: "listening" });
   }
 });
 
-
-// Route to get exercise suggestions based on muscle group using ExerciseDB API
+// Endpoint: Fetch exercise suggestions based on muscle group
 app.post("/api/get-exercises", async (req, res) => {
   const { muscleGroup } = req.body;
 
+  if (!muscleGroup) {
+    return res.status(400).json({ error: "Muscle group is required." });
+  }
+
   const options = {
     method: "GET",
-    url: "https://exercisedb.p.rapidapi.com/exercises/bodyPart/" + muscleGroup,
+    url: `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${muscleGroup}`,
     headers: {
-      "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
+      "X-RapidAPI-Key": rapidAPIKey,
       "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
     },
   };
@@ -136,82 +135,52 @@ app.post("/api/get-exercises", async (req, res) => {
     const response = await axios.request(options);
     const exercises = response.data;
 
+    if (!exercises || exercises.length === 0) {
+      return res.status(404).json({ error: "No exercises found for the specified muscle group." });
+    }
+
     const formattedExercises = exercises.map((exercise) => ({
       name: exercise.name,
       equipment: exercise.equipment,
       targetMuscle: exercise.target,
     }));
 
-    res.json({
-      state: "talking", // Indicate the AI is responding with exercise suggestions
-      exercises: formattedExercises,
-    });
+    res.json({ state: "talking", exercises: formattedExercises });
   } catch (error) {
-    console.error("Error fetching exercises from ExerciseDB:", error.message);
+    console.error("Error fetching exercises from ExerciseDB:", error.response?.data || error.message);
     res.status(500).json({ error: "Failed to fetch exercises from ExerciseDB.", state: "listening" });
   }
 });
 
+// Endpoint: Save assessment responses
+app.post("/api/save-assessment", async (req, res) => {
+  const { responses } = req.body;
 
-// Example route for updating user challenges (reflective listening)
-app.post("/api/update-challenges", async (req, res) => {
-  const { userId, challengeResponse } = req.body;
-
-  updateUserProfile(userId, { challenges: challengeResponse });
+  if (!responses || Object.keys(responses).length === 0) {
+    return res.status(400).json({ error: "Assessment responses are required." });
+  }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      temperature: 0.7, // Slightly higher temperature for varied responses
-      messages: [
-        {
-          role: "system",
-          content: "You are a personal trainer using motivational interviewing to understand the user's challenges.",
-        },
-        { role: "user", content: `The user said their main challenge is: ${challengeResponse}` },
-        { role: "assistant", content: `It's really important that you're recognizing this challenge. How do you feel about finding ways to overcome it?` },
-      ],
-    });
-
-    const reflectiveResponse = completion.data.choices[0].message.content;
-
-    res.json({ response: reflectiveResponse });
+    console.log("Assessment responses received:", responses);
+    res.json({ success: true, message: "Assessment saved successfully." });
   } catch (error) {
-    console.error("Error updating challenges:", error.message);
-    res.status(500).json({ error: "Failed to process the challenge update." });
+    console.error("Error saving assessment:", error.message);
+    res.status(500).json({ error: "Failed to save assessment results." });
   }
-});
-
-// Add this new route to your server.js
-app.post("/api/save-assessment", async (req, res) => {
-    const { responses } = req.body;
-    try {
-        // Here you would typically save to a database
-        console.log("Assessment responses received:", responses);
-        res.json({ success: true, message: "Assessment saved successfully" });
-    } catch (error) {
-        console.error("Error saving assessment:", error);
-        res.status(500).json({ error: "Failed to save assessment results." });
-    }
 });
 
 // Start the server with proper error handling
 const startServer = () => {
-  const server = app.listen(port)
-    .on('error', (error) => {
-      if (error.code === 'EADDRINUSE') {
-        console.error(`Port ${port} is already in use. Please try these solutions:`);
-        console.error('1. Stop any other servers running on this port');
-        console.error('2. Choose a different port by setting the PORT environment variable');
-        process.exit(1);
-      } else {
-        console.error('Failed to start server:', error);
-        process.exit(1);
-      }
-    })
-    .on('listening', () => {
-      console.log(`Server is running on port ${port}`);
-    });
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  }).on("error", (error) => {
+    if (error.code === "EADDRINUSE") {
+      console.error(`Port ${port} is already in use. Try a different port.`);
+    } else {
+      console.error("Failed to start server:", error.message);
+    }
+    process.exit(1);
+  });
 };
 
 startServer();
