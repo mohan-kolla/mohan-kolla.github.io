@@ -8,9 +8,14 @@ import axios from "axios";
 
 dotenv.config();
 
+// Use GitHub Actions Secrets in production
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || "fallback_api_key_here",
 });
+
+// Use the RapidAPI key
+const rapidAPIKey = process.env.RAPIDAPI_KEY || "fallback_rapid_api_key";
+
 
 const app = express();
 const port = process.env.PORT || 5002;
