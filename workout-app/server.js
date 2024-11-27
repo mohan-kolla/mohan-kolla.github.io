@@ -17,7 +17,7 @@ const port = process.env.PORT || 5002;
 
 // Middleware setup
 app.use(cors({
-  origin: 'https://mohankolla.com', // Adjust to match the frontend's origin
+  origin: 'https://mohankolla.com/workout-app/', // Adjust to match the frontend's origin
   methods: ['GET', 'POST'], // Include allowed methods
 }));
 
