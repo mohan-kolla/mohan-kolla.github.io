@@ -12,50 +12,59 @@ const avatarStates = {
     talking: "talking.png",
 };
 
-// Initialize Speech API
 function initializeSpeechAPI() {
     recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.interimResults = false;
     recognition.lang = 'en-US';
-    recognition.continuous = false;
+    recognition.continuous = true; // Enable continuous listening
 
     recognition.onstart = () => {
+        console.log("Recognition started...");
         setAvatarState("listening");
         document.getElementById("status").textContent = "Listening...";
     };
 
     recognition.onend = () => {
-        if (!isRecognitionManuallyStopped && currentAvatarState === "listening") {
-            recognition.start(); // Restart recognition if not manually stopped
+        console.log("Recognition ended...");
+        if (!isRecognitionManuallyStopped) {
+            console.log("Restarting recognition...");
+            recognition.start();
         }
     };
 
-    recognition.onresult = async function(event) {
-        console.log("Speech recognized:", event.results[0][0].transcript); // Debugging
+    recognition.onresult = async function (event) {
         const transcript = event.results[0][0].transcript.toLowerCase();
+        console.log("You said:", transcript);
+
         if (awaitingConfirmation) {
             handleConfirmation(transcript);
         } else {
             await handleWorkoutRequest(transcript);
         }
     };
+
+    recognition.onerror = (error) => {
+        console.error("Recognition error:", error);
+        document.getElementById("status").textContent = "Error occurred. Please refresh.";
+    };
 }
 
-// Start Conversation
 function startConversation() {
-    isRecognitionManuallyStopped = false; // Reset flag
-    initializeSpeechAPI();
+    isRecognitionManuallyStopped = false; // Reset manual stop flag
+    if (!recognition) {
+        initializeSpeechAPI();
+    }
     recognition.start();
     const welcomeMessage = "Hello! I'm your workout assistant. What muscle group would you like to work on today?";
     speak(welcomeMessage);
     updateConversationHistory("Trainer", welcomeMessage);
 }
 
-// Stop Conversation
 function stopConversation() {
     if (recognition) {
-        isRecognitionManuallyStopped = true; // Prevent restarting
+        isRecognitionManuallyStopped = true; // Prevent automatic restarts
         recognition.stop();
+        console.log("Recognition manually stopped.");
     }
     synth.cancel();
     setAvatarState("listening");
@@ -301,15 +310,17 @@ function finishAssessment(responses) {
 
 // Set Avatar State
 function setAvatarState(state) {
+    console.log(`Avatar state changed to: ${state}`);
     currentAvatarState = state;
+
     const avatarImage = document.getElementById("avatarImage");
     if (avatarImage) {
         avatarImage.src = avatarStates[state];
-        console.log(`Avatar state changed to: ${state}`);
     }
 
     if (state === "listening" && recognition && !isRecognitionManuallyStopped) {
-        recognition.start(); // Ensure recognition starts when in "listening" state
+        console.log("Starting recognition...");
+        recognition.start();
     }
 }
 
