@@ -5,13 +5,14 @@ let awaitingConfirmation = false;
 let muscleGroup = '';
 let conversationHistory = [];
 let currentAvatarState = "listening";
+let isRecognitionManuallyStopped = false;
 
 const avatarStates = {
     listening: "listening.png",
     talking: "talking.png",
 };
 
-// Function to initialize speech recognition
+// Initialize Speech API
 function initializeSpeechAPI() {
     recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.interimResults = false;
@@ -24,44 +25,36 @@ function initializeSpeechAPI() {
     };
 
     recognition.onend = () => {
-        if (currentAvatarState === "listening" && !awaitingConfirmation) {
-            recognition.start(); // Restart recognition only if not awaiting confirmation
+        if (!isRecognitionManuallyStopped && currentAvatarState === "listening") {
+            recognition.start(); // Restart recognition if not manually stopped
         }
     };
 
-    recognition.onresult = async function (event) {
+    recognition.onresult = async function(event) {
+        console.log("Speech recognized:", event.results[0][0].transcript); // Debugging
         const transcript = event.results[0][0].transcript.toLowerCase();
-        console.log('You said:', transcript);
-
         if (awaitingConfirmation) {
-            await handleConfirmation(transcript);
+            handleConfirmation(transcript);
         } else {
             await handleWorkoutRequest(transcript);
         }
     };
 }
 
-// Function to start speech recognition
-function startSpeechRecognition() {
-    if (recognition) {
-        recognition.start();
-    }
-}
-
-// Function to start conversation
+// Start Conversation
 function startConversation() {
-    if (!recognition) {
-        initializeSpeechAPI();
-    }
-    startSpeechRecognition();
+    isRecognitionManuallyStopped = false; // Reset flag
+    initializeSpeechAPI();
+    recognition.start();
     const welcomeMessage = "Hello! I'm your workout assistant. What muscle group would you like to work on today?";
     speak(welcomeMessage);
     updateConversationHistory("Trainer", welcomeMessage);
 }
 
-// Function to stop conversation
+// Stop Conversation
 function stopConversation() {
     if (recognition) {
+        isRecognitionManuallyStopped = true; // Prevent restarting
         recognition.stop();
     }
     synth.cancel();
@@ -306,13 +299,17 @@ function finishAssessment(responses) {
 }
 
 
-// Function to manage avatar state
+// Set Avatar State
 function setAvatarState(state) {
     currentAvatarState = state;
     const avatarImage = document.getElementById("avatarImage");
     if (avatarImage) {
         avatarImage.src = avatarStates[state];
         console.log(`Avatar state changed to: ${state}`);
+    }
+
+    if (state === "listening" && recognition && !isRecognitionManuallyStopped) {
+        recognition.start(); // Ensure recognition starts when in "listening" state
     }
 }
 
