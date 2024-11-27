@@ -5,66 +5,55 @@ let awaitingConfirmation = false;
 let muscleGroup = '';
 let conversationHistory = [];
 let currentAvatarState = "listening";
-let isRecognitionManuallyStopped = false;
 
 const avatarStates = {
     listening: "listening.png",
-    talking: "talking.png",
+    talking: "talking.png"
 };
 
+// Function to initialize speech recognition
 function initializeSpeechAPI() {
     recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.interimResults = false;
     recognition.lang = 'en-US';
-    recognition.continuous = true; // Enable continuous listening
+    recognition.continuous = false;
 
     recognition.onstart = () => {
-        console.log("Recognition started...");
         setAvatarState("listening");
         document.getElementById("status").textContent = "Listening...";
     };
 
     recognition.onend = () => {
-        console.log("Recognition ended...");
-        if (!isRecognitionManuallyStopped) {
-            console.log("Restarting recognition...");
+        if (currentAvatarState === "listening") {
             recognition.start();
         }
     };
 
-    recognition.onresult = async function (event) {
+    recognition.onresult = async function(event) {
         const transcript = event.results[0][0].transcript.toLowerCase();
-        console.log("You said:", transcript);
-
+        console.log('You said:', transcript);
+        
         if (awaitingConfirmation) {
             handleConfirmation(transcript);
         } else {
             await handleWorkoutRequest(transcript);
         }
     };
-
-    recognition.onerror = (error) => {
-        console.error("Recognition error:", error);
-        document.getElementById("status").textContent = "Error occurred. Please refresh.";
-    };
 }
 
+// Function to start conversation
 function startConversation() {
-    isRecognitionManuallyStopped = false; // Reset manual stop flag
-    if (!recognition) {
-        initializeSpeechAPI();
-    }
+    initializeSpeechAPI();
     recognition.start();
     const welcomeMessage = "Hello! I'm your workout assistant. What muscle group would you like to work on today?";
     speak(welcomeMessage);
     updateConversationHistory("Trainer", welcomeMessage);
 }
 
+// Function to stop conversation
 function stopConversation() {
     if (recognition) {
-        isRecognitionManuallyStopped = true; // Prevent automatic restarts
         recognition.stop();
-        console.log("Recognition manually stopped.");
     }
     synth.cancel();
     setAvatarState("listening");
@@ -84,16 +73,16 @@ function clearConversationHistory() {
 
 // Function to speak text
 function speak(text) {
-    synth.cancel(); // Cancel any ongoing speech
+    synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-
+    
     utterance.onstart = () => {
         setAvatarState("talking");
     };
 
     utterance.onend = () => {
         setAvatarState("listening");
-        if (recognition && currentAvatarState === "listening" && !awaitingConfirmation) {
+        if (recognition && currentAvatarState === "listening") {
             recognition.start();
         }
     };
@@ -115,6 +104,7 @@ function updateConversationHistory(speaker, message) {
 
 // Function to handle workout requests
 async function handleWorkoutRequest(transcript) {
+    // Check for muscle groups in the transcript
     const muscleGroups = ["chest", "back", "legs", "arms", "shoulders", "core"];
     for (const group of muscleGroups) {
         if (transcript.includes(group)) {
@@ -127,6 +117,7 @@ async function handleWorkoutRequest(transcript) {
         }
     }
 
+    // If no muscle group is found
     const helpMessage = "I didn't catch a specific muscle group. Please mention which area you'd like to work on: chest, back, legs, arms, shoulders, or core.";
     speak(helpMessage);
     updateConversationHistory("Trainer", helpMessage);
@@ -137,9 +128,8 @@ async function handleConfirmation(transcript) {
     if (transcript.includes("yes")) {
         awaitingConfirmation = false;
         const processingMessage = "Great! Let me fetch some exercises for you.";
-        speak(processingMessage);
         updateConversationHistory("Trainer", processingMessage);
-
+        
         try {
             const response = await fetch('/api/get-exercises', {
                 method: 'POST',
@@ -148,13 +138,10 @@ async function handleConfirmation(transcript) {
                 },
                 body: JSON.stringify({ muscleGroup }),
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                displayExercises(data.exercises);
-            } else {
-                throw new Error('Failed to fetch exercises.');
-            }
+            
+            const data = await response.json();
+            displayExercises(data.exercises);
+            
         } catch (error) {
             console.error('Error:', error);
             updateConversationHistory("System", "Sorry, there was an error fetching exercises.");
@@ -199,6 +186,16 @@ function displayExercises(exercises) {
     const message = `Here are some exercises for your ${muscleGroup}: ${exerciseList}`;
     speak(message);
     updateConversationHistory("Trainer", message);
+}
+
+// Function to manage avatar state
+function setAvatarState(state) {
+    currentAvatarState = state;
+    const avatarImage = document.getElementById("avatarImage");
+    if (avatarImage) {
+        avatarImage.src = avatarStates[state];
+        console.log(`Avatar state changed to: ${state}`);
+    }
 }
 
 // Assessment functionality
@@ -307,28 +304,12 @@ function finishAssessment(responses) {
     });
 }
 
-
-// Set Avatar State
-function setAvatarState(state) {
-    console.log(`Avatar state changed to: ${state}`);
-    currentAvatarState = state;
-
-    const avatarImage = document.getElementById("avatarImage");
-    if (avatarImage) {
-        avatarImage.src = avatarStates[state];
-    }
-
-    if (state === "listening" && recognition && !isRecognitionManuallyStopped) {
-        console.log("Starting recognition...");
-        recognition.start();
-    }
-}
-
 // Add event listeners when the DOM is loaded
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const beginConversationBtn = document.getElementById('beginConversationBtn');
     const endConversationBtn = document.getElementById('endConversationBtn');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const startAssessmentBtn = document.getElementById('startAssessmentBtn');
 
     if (beginConversationBtn) {
         beginConversationBtn.addEventListener('click', startConversation);
@@ -341,4 +322,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (clearHistoryBtn) {
         clearHistoryBtn.addEventListener('click', clearConversationHistory);
     }
+
+    if (startAssessmentBtn) {
+        startAssessmentBtn.addEventListener('click', startAssessment);
+    }
 });
+  
+  
+  
