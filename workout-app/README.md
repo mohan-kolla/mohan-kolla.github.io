@@ -225,7 +225,7 @@ This project is licensed under the MIT License. Feel free to use, modify, and di
   Graduate student passionate about AI-driven solutions for fitness and wellness.  
   📧 mokolla21@gmail.com
 
-- **Javier Fernandez** 
+- **Javier Fernandez**  
  Graduate student
 
 ---
