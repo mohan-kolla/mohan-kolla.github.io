@@ -57,7 +57,8 @@
     <a href="../projects/current-projects.html">Current Projects</a>
     <a href="personal-blog.html" class="active">Personal Blog</a>
     <a href="#about">About</a>
-    <button class="w3-button w3-green" onclick="document.getElementById('login-form').style.display='block'">Admin Login</button>
+    <button id="logout-btn" class="w3-button w3-green" onclick="logout()" style="display: none;">Logout</button>
+    <button id="login-btn" class="w3-button w3-green" onclick="document.getElementById('login-form').style.display='block'">Admin Login</button>
   </div>
 
   <!-- Blog Entries -->
@@ -118,7 +119,18 @@
     // Check if user is logged in as admin
     function checkAdmin() {
       const addBlogBtn = document.getElementById('add-blog-btn');
-      addBlogBtn.style.display = isAdmin ? 'block' : 'none';
+      const loginBtn = document.getElementById('login-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+
+      if (isAdmin) {
+        addBlogBtn.style.display = 'block';
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'block';
+      } else {
+        addBlogBtn.style.display = 'none';
+        loginBtn.style.display = 'block';
+        logoutBtn.style.display = 'none';
+      }
     }
 
     // Login function
@@ -129,11 +141,29 @@
       // Updated credentials
       if (username === 'EmpMo666' && password === 'LilithKolla21') {
         isAdmin = true;
+        localStorage.setItem('isLoggedIn', 'true'); // Store login state
         document.getElementById('login-form').style.display = 'none';
         checkAdmin();
         renderBlogEntries();
       } else {
         alert('Invalid credentials');
+      }
+    }
+
+    // Logout function
+    function logout() {
+      isAdmin = false;
+      localStorage.removeItem('isLoggedIn'); // Clear login state
+      checkAdmin();
+    }
+
+    // Check login state on page load
+    function checkLoginState() {
+      const loggedIn = localStorage.getItem('isLoggedIn');
+      if (loggedIn === 'true') {
+        isAdmin = true;
+        checkAdmin();
+        renderBlogEntries();
       }
     }
 
@@ -223,8 +253,8 @@
     }
 
     // Initial render
+    checkLoginState(); // Check login state on page load
     renderBlogEntries();
-    checkAdmin();
   </script>
 </body>
 </html>
