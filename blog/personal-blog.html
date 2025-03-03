@@ -131,155 +131,165 @@
 
   <script>
     let isAdmin = false;
-    let editingEntryId = null;
+let editingEntryId = null;
 
-    // Check if user is logged in as admin
-    function checkAdmin() {
-      const addBlogBtn = document.getElementById('add-blog-btn');
-      const loginBtn = document.getElementById('login-btn');
-      const logoutBtn = document.getElementById('logout-btn');
+// Check if user is logged in as admin
+function checkAdmin() {
+  const addBlogBtn = document.getElementById('add-blog-btn');
+  const loginBtn = document.getElementById('login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
 
-      if (isAdmin) {
-        addBlogBtn.style.display = 'block';
-        loginBtn.style.display = 'none';
-        logoutBtn.style.display = 'block';
-      } else {
-        addBlogBtn.style.display = 'none';
-        loginBtn.style.display = 'block';
-        logoutBtn.style.display = 'none';
-      }
-    }
+  if (isAdmin) {
+    addBlogBtn.style.display = 'block';
+    loginBtn.style.display = 'none';
+    logoutBtn.style.display = 'block';
+  } else {
+    addBlogBtn.style.display = 'none';
+    loginBtn.style.display = 'block';
+    logoutBtn.style.display = 'none';
+  }
+}
 
-    // Login function
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+// Login function
+function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-      if (username === 'EmpMo666' && password === 'LilithKolla21') {
-        isAdmin = true;
-        localStorage.setItem('isLoggedIn', 'true');
-        document.getElementById('login-form').style.display = 'none';
-        checkAdmin();
-        renderBlogEntries();
-      } else {
-        alert('Invalid credentials');
-      }
-    }
-
-    // Logout function
-    function logout() {
-      isAdmin = false;
-      localStorage.removeItem('isLoggedIn');
-      checkAdmin();
-    }
-
-    // Check login state on page load
-    function checkLoginState() {
-      const loggedIn = localStorage.getItem('isLoggedIn');
-      if (loggedIn === 'true') {
-        isAdmin = true;
-        checkAdmin();
-        renderBlogEntries();
-      }
-    }
-
-    // Sample Blog Entries in localStorage
-    if (!localStorage.getItem('blogEntries')) {
-      localStorage.setItem('blogEntries', JSON.stringify([]));
-    }
-
-    function getBlogEntries() {
-      return JSON.parse(localStorage.getItem('blogEntries')) || [];
-    }
-
-    function saveBlogEntries(entries) {
-      localStorage.setItem('blogEntries', JSON.stringify(entries));
-    }
-
-    function renderBlogEntries() {
-      const entries = getBlogEntries();
-      const blogContainer = document.getElementById('blog-entries');
-      blogContainer.innerHTML = '';
-
-      entries.forEach(entry => {
-        const entryHTML = `
-          <div class="w3-card-4 w3-margin w3-white">
-            <div class="w3-container">
-              <h3>${entry.title}</h3>
-              <h5>${entry.date}</h5>
-            </div>
-            <div class="w3-container">
-              <div id="content-${entry.id}">${marked.parse(entry.content)}</div>
-              ${isAdmin ? `
-                <button class="w3-button w3-green" onclick="editEntry('${entry.id}')">Edit</button>
-                <button class="w3-button w3-red" onclick="deleteEntry('${entry.id}')">Delete</button>
-              ` : ''}
-            </div>
-          </div>
-        `;
-        blogContainer.innerHTML += entryHTML;
-
-        // Render LaTeX in the entry content
-        renderMathInElement(document.getElementById(`content-${entry.id}`), {
-          delimiters: [
-            { left: '$$', right: '$$', display: true },  // Block-level LaTeX
-            { left: '$', right: '$', display: false }     // Inline LaTeX
-          ],
-          throwOnError: false
-        });
-      });
-    }
-
-    function openBlogForm(entryId = null) {
-      editingEntryId = entryId;
-      const formTitle = entryId ? 'Edit Blog Entry' : 'Add Blog Entry';
-      document.getElementById('form-title').innerText = formTitle;
-      document.getElementById('blog-form').style.display = 'block';
-
-      if (entryId) {
-        const entry = getBlogEntries().find(e => e.id === entryId);
-        document.getElementById('blog-title').value = entry.title;
-        document.getElementById('blog-content').value = entry.content;
-      } else {
-        document.getElementById('blog-title').value = '';
-        document.getElementById('blog-content').value = '';
-      }
-    }
-
-    function saveEntry() {
-      const title = document.getElementById('blog-title').value;
-      const content = document.getElementById('blog-content').value;
-      const entries = getBlogEntries();
-
-      if (editingEntryId) {
-        // Update existing entry
-        const index = entries.findIndex(e => e.id === editingEntryId);
-        entries[index] = { ...entries[index], title, content };
-      } else {
-        // Add new entry
-        const newEntry = {
-          id: Date.now().toString(),
-          title,
-          content,
-          date: new Date().toLocaleDateString(),
-        };
-        entries.push(newEntry);
-      }
-
-      saveBlogEntries(entries);
-      document.getElementById('blog-form').style.display = 'none';
-      renderBlogEntries();
-    }
-
-    function deleteEntry(entryId) {
-      const entries = getBlogEntries().filter(e => e.id !== entryId);
-      saveBlogEntries(entries);
-      renderBlogEntries();
-    }
-
-    // Initial render
-    checkLoginState();
+  if (username === 'EmpMo666' && password === 'LilithKolla21') {
+    isAdmin = true;
+    localStorage.setItem('isLoggedIn', 'true');
+    document.getElementById('login-form').style.display = 'none';
+    checkAdmin();
     renderBlogEntries();
+  } else {
+    alert('Invalid credentials');
+  }
+}
+
+// Logout function
+function logout() {
+  isAdmin = false;
+  localStorage.removeItem('isLoggedIn');
+  checkAdmin();
+}
+
+// Check login state on page load
+function checkLoginState() {
+  const loggedIn = localStorage.getItem('isLoggedIn');
+  if (loggedIn === 'true') {
+    isAdmin = true;
+    checkAdmin();
+    renderBlogEntries();
+  }
+}
+
+// Sample Blog Entries in localStorage
+if (!localStorage.getItem('blogEntries')) {
+  localStorage.setItem('blogEntries', JSON.stringify([]));
+}
+
+function getBlogEntries() {
+  return JSON.parse(localStorage.getItem('blogEntries')) || [];
+}
+
+function saveBlogEntries(entries) {
+  localStorage.setItem('blogEntries', JSON.stringify(entries));
+}
+
+function renderBlogEntries() {
+  const entries = getBlogEntries();
+  const blogContainer = document.getElementById('blog-entries');
+  blogContainer.innerHTML = '';
+
+  entries.forEach(entry => {
+    const entryHTML = `
+      <div class="w3-card-4 w3-margin w3-white">
+        <div class="w3-container">
+          <h3>${entry.title}</h3>
+          <h5>${entry.date}</h5>
+        </div>
+        <div class="w3-container">
+          <div id="content-${entry.id}">${marked.parse(entry.content)}</div>
+          ${isAdmin ? `
+            <button class="w3-button w3-green" onclick="editEntry('${entry.id}')">Edit</button>
+            <button class="w3-button w3-red" onclick="deleteEntry('${entry.id}')">Delete</button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+    blogContainer.innerHTML += entryHTML;
+
+    // Render LaTeX in the entry content
+    renderMathInElement(document.getElementById(`content-${entry.id}`), {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },  // Block-level LaTeX
+        { left: '$', right: '$', display: false }     // Inline LaTeX
+      ],
+      throwOnError: false
+    });
+  });
+}
+
+// Function to handle editing an entry
+function editEntry(entryId) {
+  openBlogForm(entryId); // Open the form with the selected entry's data
+}
+
+// Function to open the blog form (for adding or editing)
+function openBlogForm(entryId = null) {
+  editingEntryId = entryId; // Set the editingEntryId to the selected entry's ID
+  const formTitle = entryId ? 'Edit Blog Entry' : 'Add Blog Entry'; // Set the form title
+  document.getElementById('form-title').innerText = formTitle; // Update the form title
+  document.getElementById('blog-form').style.display = 'block'; // Show the form
+
+  if (entryId) {
+    // If editing, pre-fill the form with the selected entry's data
+    const entry = getBlogEntries().find(e => e.id === entryId);
+    document.getElementById('blog-title').value = entry.title;
+    document.getElementById('blog-content').value = entry.content;
+  } else {
+    // If adding a new entry, clear the form
+    document.getElementById('blog-title').value = '';
+    document.getElementById('blog-content').value = '';
+  }
+}
+
+// Function to save an entry (for adding or editing)
+function saveEntry() {
+  const title = document.getElementById('blog-title').value;
+  const content = document.getElementById('blog-content').value;
+  const entries = getBlogEntries();
+
+  if (editingEntryId) {
+    // If editing, update the existing entry
+    const index = entries.findIndex(e => e.id === editingEntryId);
+    entries[index] = { ...entries[index], title, content };
+  } else {
+    // If adding, create a new entry
+    const newEntry = {
+      id: Date.now().toString(), // Generate a unique ID
+      title,
+      content,
+      date: new Date().toLocaleDateString(), // Add the current date
+    };
+    entries.push(newEntry);
+  }
+
+  saveBlogEntries(entries); // Save the updated entries to localStorage
+  document.getElementById('blog-form').style.display = 'none'; // Hide the form
+  renderBlogEntries(); // Re-render the blog entries
+}
+
+// Function to delete an entry
+function deleteEntry(entryId) {
+  const entries = getBlogEntries().filter(e => e.id !== entryId);
+  saveBlogEntries(entries);
+  renderBlogEntries();
+}
+
+// Initial render
+checkLoginState();
+renderBlogEntries();
   </script>
 </body>
 </html>
