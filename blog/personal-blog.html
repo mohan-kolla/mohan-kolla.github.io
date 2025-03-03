@@ -13,8 +13,8 @@
 <body class="w3-light-grey">
   <!-- Navigation Bar -->
   <div class="topnav">
-    <a href="index.html">Home</a>
-    <a href="current-projects.html">Current Projects</a>
+    <a href="../index.html">Home</a>
+    <a href="../projects/current-projects.html">Current Projects</a>
     <a href="personal-blog.html" class="active">Personal Blog</a>
     <a href="#about">About</a>
   </div>
@@ -65,8 +65,107 @@
     <a href="https://www.linkedin.com/in/mohan-kolla-1b428524b/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i></a> 
   </footer>
 
-  <script>
-    // JavaScript code from above goes here
-  </script>
+<script>
+let isAdmin = false;
+let editingEntryId = null;
+
+function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  // Simple password check (replace with secure authentication in production)
+  if (username === 'admin' && password === 'admin123') {
+    isAdmin = true;
+    document.getElementById('login-form').style.display = 'none';
+    renderBlogEntries();
+  } else {
+    alert('Invalid credentials');
+  }
+}
+// Sample Blog Entries in localStorage
+if (!localStorage.getItem('blogEntries')) {
+  localStorage.setItem('blogEntries', JSON.stringify([]));
+}
+
+function getBlogEntries() {
+  return JSON.parse(localStorage.getItem('blogEntries')) || [];
+}
+
+function saveBlogEntries(entries) {
+  localStorage.setItem('blogEntries', JSON.stringify(entries));
+}
+
+function renderBlogEntries() {
+  const entries = getBlogEntries();
+  const blogContainer = document.getElementById('blog-entries');
+  blogContainer.innerHTML = '';
+
+  entries.forEach(entry => {
+    const entryHTML = `
+      <div class="w3-card-4 w3-margin w3-white">
+        <div class="w3-container">
+          <h3>${entry.title}</h3>
+          <h5>${entry.date}</h5>
+        </div>
+        <div class="w3-container">
+          <p>${entry.content}</p>
+          ${isAdmin ? `
+            <button class="w3-button w3-green" onclick="editEntry('${entry.id}')">Edit</button>
+            <button class="w3-button w3-red" onclick="deleteEntry('${entry.id}')">Delete</button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+    blogContainer.innerHTML += entryHTML;
+  });
+}
+  
+function openBlogForm(entryId = null) {
+  editingEntryId = entryId;
+  const formTitle = entryId ? 'Edit Blog Entry' : 'Add Blog Entry';
+  document.getElementById('form-title').innerText = formTitle;
+  document.getElementById('blog-form').style.display = 'block';
+
+  if (entryId) {
+    const entry = getBlogEntries().find(e => e.id === entryId);
+    document.getElementById('blog-title').value = entry.title;
+    document.getElementById('blog-content').value = entry.content;
+  } else {
+    document.getElementById('blog-title').value = '';
+    document.getElementById('blog-content').value = '';
+  }
+}
+
+function saveEntry() {
+  const title = document.getElementById('blog-title').value;
+  const content = document.getElementById('blog-content').value;
+  const entries = getBlogEntries();
+
+  if (editingEntryId) {
+    // Update existing entry
+    const index = entries.findIndex(e => e.id === editingEntryId);
+    entries[index] = { ...entries[index], title, content };
+  } else {
+    // Add new entry
+    const newEntry = {
+      id: Date.now().toString(),
+      title,
+      content,
+      date: new Date().toLocaleDateString(),
+    };
+    entries.push(newEntry);
+  }
+
+  saveBlogEntries(entries);
+  document.getElementById('blog-form').style.display = 'none';
+  renderBlogEntries();
+}
+
+function deleteEntry(entryId) {
+  const entries = getBlogEntries().filter(e => e.id !== entryId);
+  saveBlogEntries(entries);
+  renderBlogEntries();
+}
+</script>
 </body>
 </html>
