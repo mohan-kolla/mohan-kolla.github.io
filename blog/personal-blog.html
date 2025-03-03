@@ -43,16 +43,18 @@
     }
 
     /* Style the buttons in the navigation bar */
-    .topnav button {
-      float: right; /* Align buttons to the right */
-      margin: 8px 16px; /* Add margin for spacing */
-      padding: 10px 20px; /* Add padding */
-      background-color: #04AA6D; /* Green background */
-      color: white; /* White text */
-      border: none; /* Remove border */
-      cursor: pointer; /* Add pointer cursor */
-      font-size: 17px; /* Match font size with links */
-    }
+    /* Give the button the same vertical padding as the links and remove extra margin */
+.topnav button {
+  float: right;
+  padding: 14px 16px; /* match the anchor padding */
+  margin: 0;          /* remove extra margin */
+  background-color: #04AA6D;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+}
+
 
     /* Change button color on hover */
     .topnav button:hover {
