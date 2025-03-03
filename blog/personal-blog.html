@@ -37,6 +37,17 @@
       float: right;
       margin: 8px 16px;
     }
+
+    /* Close button for forms */
+    .w3-modal .w3-modal-content {
+      position: relative;
+    }
+    .w3-modal .w3-button.w3-display-topright {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 8px 16px;
+    }
   </style>
 </head>
 <body class="w3-light-grey">
@@ -79,6 +90,7 @@
   <!-- Add/Edit Blog Form -->
   <div id="blog-form" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+      <span onclick="document.getElementById('blog-form').style.display='none'" class="w3-button w3-display-topright">&times;</span>
       <div class="w3-center">
         <h3 id="form-title">Add Blog Entry</h3>
       </div>
@@ -114,8 +126,8 @@
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      // Simple password check (replace with secure authentication in production)
-      if (username === 'admin' && password === 'admin123') {
+      // Updated credentials
+      if (username === 'EmpMo666' && password === 'LilithKolla21') {
         isAdmin = true;
         document.getElementById('login-form').style.display = 'none';
         checkAdmin();
