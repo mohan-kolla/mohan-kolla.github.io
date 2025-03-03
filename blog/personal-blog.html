@@ -189,18 +189,15 @@
       checkAdmin();
     }
 
-    // Fetch and render all blog entries from the server
-    function fetchBlogEntries() {
-      fetch(API_URL)
-        .then(response => {
-          if (!response.ok) throw new Error('Failed to fetch blog entries');
-          return response.json();
-        })
-        .then(entries => {
-          renderBlogEntries(entries);
-        })
-        .catch(err => console.error(err));
-    }
+   // Replace this with your Render URL
+const API_URL = 'https://mohan-kolla-github-io.onrender.com';
+
+// Then use API_URL in your fetch calls
+fetch(API_URL)
+  .then(response => response.json())
+  .then(entries => renderBlogEntries(entries))
+  .catch(err => console.error(err));
+
 
     // Render function
     function renderBlogEntries(entries) {
