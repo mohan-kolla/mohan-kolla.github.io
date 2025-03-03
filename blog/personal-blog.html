@@ -13,6 +13,51 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
   <style>
     html,body,h1,h2,h3,h4,h5,h6 { font-family: Alice; }
+
+    /* Top Navigation Bar Styles */
+    .topnav {
+      background-color: #333; /* Dark background */
+      overflow: hidden; /* Ensures the content doesn't overflow */
+    }
+
+    /* Style the links inside the navigation bar */
+    .topnav a {
+      float: left; /* Align links to the left */
+      color: #f2f2f2; /* White text color */
+      text-align: center; /* Center the text */
+      padding: 14px 16px; /* Add padding */
+      text-decoration: none; /* Remove underline */
+      font-size: 17px; /* Set font size */
+    }
+
+    /* Change the color of links on hover */
+    .topnav a:hover {
+      background-color: #ddd; /* Light gray background on hover */
+      color: black; /* Black text on hover */
+    }
+
+    /* Add a color to the active/current link */
+    .topnav a.active {
+      background-color: #04AA6D; /* Green background for active link */
+      color: white; /* White text for active link */
+    }
+
+    /* Style the buttons in the navigation bar */
+    .topnav button {
+      float: right; /* Align buttons to the right */
+      margin: 8px 16px; /* Add margin for spacing */
+      padding: 10px 20px; /* Add padding */
+      background-color: #04AA6D; /* Green background */
+      color: white; /* White text */
+      border: none; /* Remove border */
+      cursor: pointer; /* Add pointer cursor */
+      font-size: 17px; /* Match font size with links */
+    }
+
+    /* Change button color on hover */
+    .topnav button:hover {
+      background-color: #45a049; /* Darker green on hover */
+    }
   </style>
 </head>
 <body class="w3-light-grey">
