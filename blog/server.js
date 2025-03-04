@@ -1,66 +1,92 @@
 // server.js
 const express = require('express');
-const fs = require('fs');
 const cors = require('cors');
+const { Pool } = require('pg');
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-const BLOG_DATA_FILE = 'blogEntries.json';
-
-function loadBlogEntries() {
-  if (!fs.existsSync(BLOG_DATA_FILE)) {
-    return [];
-  }
-  const data = fs.readFileSync(BLOG_DATA_FILE);
-  return JSON.parse(data);
-}
-
-function saveBlogEntries(entries) {
-  fs.writeFileSync(BLOG_DATA_FILE, JSON.stringify(entries, null, 2));
-}
-
-app.get('/api/blog-entries', (req, res) => {
-  const entries = loadBlogEntries();
-  res.json(entries);
+// Configure PostgreSQL connection
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  // If your provider requires SSL:
+  ssl: { rejectUnauthorized: false }
 });
 
-app.get('/api/blog-entries/:id', (req, res) => {
-  const entries = loadBlogEntries();
-  const entry = entries.find(e => e.id === req.params.id);
-  if (entry) {
-    res.json(entry);
-  } else {
-    res.status(404).json({ error: 'Entry not found' });
+// GET all blog entries
+app.get('/api/blog-entries', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM blog_entries ORDER BY id ASC');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching blog entries', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-app.post('/api/blog-entries', (req, res) => {
-  const entries = loadBlogEntries();
-  const { id, title, content } = req.body;
-
-  if (id) {
-    const index = entries.findIndex(e => e.id === id);
-    if (index > -1) {
-      entries[index] = { ...entries[index], title, content, date: new Date().toLocaleDateString() };
+// GET a single blog entry by ID
+app.get('/api/blog-entries/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('SELECT * FROM blog_entries WHERE id = $1', [id]);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
     } else {
-      entries.push({ id: Date.now().toString(), title, content, date: new Date().toLocaleDateString() });
+      res.status(404).json({ error: 'Entry not found' });
     }
-  } else {
-    entries.push({ id: Date.now().toString(), title, content, date: new Date().toLocaleDateString() });
+  } catch (err) {
+    console.error('Error fetching blog entry', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-  
-  saveBlogEntries(entries);
-  res.json({ success: true });
 });
 
-app.delete('/api/blog-entries/:id', (req, res) => {
-  let entries = loadBlogEntries();
-  entries = entries.filter(e => e.id !== req.params.id);
-  saveBlogEntries(entries);
-  res.json({ success: true });
+// POST to add or update a blog entry
+app.post('/api/blog-entries', async (req, res) => {
+  const { id, title, content } = req.body;
+  const currentDate = new Date().toLocaleDateString();
+  try {
+    if (id) {
+      // Attempt to update an existing entry
+      const updateResult = await pool.query(
+        'UPDATE blog_entries SET title = $1, content = $2, date = $3 WHERE id = $4 RETURNING *',
+        [title, content, currentDate, id]
+      );
+      if (updateResult.rows.length > 0) {
+        res.json(updateResult.rows[0]);
+      } else {
+        // If no entry was updated, insert a new one
+        const insertResult = await pool.query(
+          'INSERT INTO blog_entries (title, content, date) VALUES ($1, $2, $3) RETURNING *',
+          [title, content, currentDate]
+        );
+        res.json(insertResult.rows[0]);
+      }
+    } else {
+      // Insert a new blog entry
+      const insertResult = await pool.query(
+        'INSERT INTO blog_entries (title, content, date) VALUES ($1, $2, $3) RETURNING *',
+        [title, content, currentDate]
+      );
+      res.json(insertResult.rows[0]);
+    }
+  } catch (err) {
+    console.error('Error saving blog entry', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// DELETE a blog entry
+app.delete('/api/blog-entries/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query('DELETE FROM blog_entries WHERE id = $1', [id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error deleting blog entry', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
