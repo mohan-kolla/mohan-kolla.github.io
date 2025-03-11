@@ -190,14 +190,19 @@
 
     // Fetch and render all blog entries from the server
     function fetchBlogEntries() {
-      fetch(API_URL)
-        .then(response => {
-          if (!response.ok) throw new Error('Failed to fetch blog entries');
-          return response.json();
-        })
-        .then(entries => renderBlogEntries(entries))
-        .catch(err => console.error(err));
-    }
+  fetch(API_URL)
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to fetch blog entries');
+      return response.json();
+    })
+    .then(entries => {
+      // Reverse the array so the most recent entries appear first
+      entries.reverse();
+      renderBlogEntries(entries);
+    })
+    .catch(err => console.error(err));
+}
+
 
     // Render blog entries
     function renderBlogEntries(entries) {
