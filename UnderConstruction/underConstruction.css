@@ -1,45 +1,100 @@
-/* Modal styles */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5); /* Semi-transparent background */
+/* General page reset and background */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #222;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  height: 100%;
+}
+
+/* Main container for the animation */
+.animation-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to bottom, #0d0d0d, #333);
+}
+
+/* Forest container: bottom half of the screen */
+.forest {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+}
+
+/* Style for each tree */
+.tree {
+  position: absolute;
+  bottom: 0;
+  font-size: 3em;
+  /* Animate the trees with a falling effect */
+  animation: fall 3s infinite;
+}
+
+/* Keyframes for the tree falling animation */
+@keyframes fall {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
   }
-  .modal-content {
-    position: relative;
-    margin: 15% auto;
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-    background: white;
-    border-radius: 10px;
+  50% {
+    transform: rotate(45deg);
+    opacity: 0.5;
   }
-  
-  /* Forest animation */
-  .forest {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  100% {
+    transform: rotate(0deg);
+    opacity: 1;
   }
-  .tree {
-    font-size: 2em;
+}
+
+/* Container for the cat animation */
+.cat-container {
+  position: absolute;
+  bottom: 50%; /* Adjust as needed */
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Cat image styling and animation */
+.cat {
+  position: absolute;
+  width: 100px;
+  /* Animate the cat across the screen with a chopping effect */
+  animation: catChop 3s infinite;
+}
+
+/* Keyframes for the cat movement and chopping effect */
+@keyframes catChop {
+  0% {
+    left: -10%;
+    transform: rotate(0deg);
   }
-  .tree-left {
-    animation: clearLeft 2s forwards;
+  40% {
+    transform: rotate(10deg);
   }
-  .tree-right {
-    animation: clearRight 2s forwards;
+  50% {
+    left: 50%;
+    transform: rotate(-10deg);
   }
-  @keyframes clearLeft {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(-100px); opacity: 0; }
+  60% {
+    transform: rotate(10deg);
   }
-  @keyframes clearRight {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100px); opacity: 0; }
+  100% {
+    left: 110%;
+    transform: rotate(0deg);
   }
-  
+}
+
+/* Centered overlay text */
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3em;
+  text-shadow: 2px 2px 5px #000;
+}
