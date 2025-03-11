@@ -1,0 +1,45 @@
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent background */
+  }
+  .modal-content {
+    position: relative;
+    margin: 15% auto;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+  }
+  
+  /* Forest animation */
+  .forest {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .tree {
+    font-size: 2em;
+  }
+  .tree-left {
+    animation: clearLeft 2s forwards;
+  }
+  .tree-right {
+    animation: clearRight 2s forwards;
+  }
+  @keyframes clearLeft {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100px); opacity: 0; }
+  }
+  @keyframes clearRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100px); opacity: 0; }
+  }
+  
