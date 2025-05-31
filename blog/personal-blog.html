@@ -1,7 +1,8 @@
+<!-- blog/personal-blog.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Personal Blog - Mohan Kolla</title>
+  <title>Personal Blog – Mohan Kolla</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -19,49 +20,19 @@
   />
 
   <style>
-    html,
-    body,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: Alice;
-    }
-    .topnav {
-      background-color: #333;
-      overflow: hidden;
-    }
+    html, body, h1, h2, h3, h4, h5, h6 { font-family: Alice; }
+    .topnav { background-color: #333; overflow: hidden; }
     .topnav a {
-      float: left;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
+      float: left; color: #f2f2f2; text-align: center; padding: 14px 16px;
+      text-decoration: none; font-size: 17px;
     }
-    .topnav a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-    .topnav a.active {
-      background-color: #04aa6d;
-      color: white;
-    }
+    .topnav a:hover { background-color: #ddd; color: black; }
+    .topnav a.active { background-color: #04AA6D; color: white; }
     .topnav button {
-      float: right;
-      padding: 14px 16px;
-      margin: 0;
-      background-color: #04aa6d;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 17px;
+      float: right; padding: 14px 16px; margin: 0; background-color: #04AA6D;
+      color: #fff; border: none; cursor: pointer; font-size: 17px;
     }
-    .topnav button:hover {
-      background-color: #45a049;
-    }
+    .topnav button:hover { background-color: #45a049; }
   </style>
 </head>
 
@@ -71,29 +42,21 @@
     <a href="/index.html">Home</a>
     <a href="/projects/current-projects.html">Current Projects</a>
     <a href="/personal-blog.html" class="active">Personal Blog</a>
-    <!-- Removed the About tab -->
-    <button id="logout-btn" class="w3-button w3-green" onclick="logout()" style="display: none;">
-      Logout
-    </button>
-    <button id="login-btn" class="w3-button w3-green" onclick="document.getElementById('login-form').style.display='block'">
-      Login
-    </button>
+    <button id="logout-btn" class="w3-button w3-green" onclick="logout()" style="display: none;">Logout</button>
+    <button id="login-btn" class="w3-button w3-green" onclick="document.getElementById('login-form').style.display='block'">Login</button>
   </div>
 
-  <!-- Blog Entries -->
+  <!-- Blog Entries Container -->
   <div class="w3-content w3-margin-top" style="max-width: 1400px;">
     <div class="w3-container w3-center">
-      <!-- Add Blog Entry Button (Visible to Admins) -->
       <button id="add-blog-btn" class="w3-button w3-green" onclick="openBlogForm()" style="display: none;">
         Add Blog Entry
       </button>
     </div>
-    <div id="blog-entries" class="w3-container">
-      <!-- Blog entries will be dynamically inserted here -->
-    </div>
+    <div id="blog-entries" class="w3-container"></div>
   </div>
 
-  <!-- Login Form -->
+  <!-- Login Modal -->
   <div id="login-form" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width: 600px;">
       <span onclick="document.getElementById('login-form').style.display='none'" class="w3-button w3-display-topright">&times;</span>
@@ -110,25 +73,17 @@
     </div>
   </div>
 
-  <!-- Add/Edit Blog Form -->
+  <!-- Add/Edit Blog Modal -->
   <div id="blog-form" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width: 600px;">
       <span onclick="document.getElementById('blog-form').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-      <div class="w3-center">
-        <h3 id="form-title">Add Blog Entry</h3>
-      </div>
+      <div class="w3-center"><h3 id="form-title">Add Blog Entry</h3></div>
       <div class="w3-container">
-        <!-- Hidden field to store the entry ID during editing -->
         <input type="hidden" id="blog-entry-id" />
         <label for="blog-title"><b>Title</b></label>
         <input class="w3-input w3-border" type="text" placeholder="Enter Title" id="blog-title" required />
         <label for="blog-content"><b>Content</b></label>
-        <textarea
-          class="w3-input w3-border"
-          placeholder="Enter Content (Markdown supported)"
-          id="blog-content"
-          required
-        ></textarea>
+        <textarea class="w3-input w3-border" placeholder="Enter Content (Markdown supported)" id="blog-content" required></textarea>
         <button class="w3-button w3-block w3-green w3-section w3-padding" onclick="saveEntry()">Save</button>
       </div>
     </div>
@@ -145,33 +100,25 @@
     </a>
   </footer>
 
-  <!-- KaTeX JS -->
-  <script
-    defer
+  <!-- KaTeX & Marked.js -->
+  <script defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
-    integrity="sha384-cpW3hN6ZgA6x8g6fF4F4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    defer
+    integrity="sha384-cpW3hN6ZgA6x8g6fF4F4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f"
+    crossorigin="anonymous"></script>
+  <script defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
     integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
-    crossorigin="anonymous"
-  ></script>
-  <!-- Marked.js (for Markdown parsing) -->
+    crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <script>
-    // Flag to track if user is admin (purely client-side for demo)
     let isAdmin = false;
-    // Global variable to hold the editing entry id
     let editingEntryId = null;
 
-    // Because this HTML is served by the same Express server,
-    // we can just use a relative path for the API:
-    const API_URL = 'https://my-blog-api.up.railway.app/api/blog-entries';
+    // Because this page is served by the Express server from the same origin,
+    // a relative path works:
+    const API_URL = '/api/blog-entries';
 
-    // Check login status & show/hide admin buttons
     function checkAdmin() {
       const addBlogBtn = document.getElementById('add-blog-btn');
       const loginBtn = document.getElementById('login-btn');
@@ -187,11 +134,9 @@
       }
     }
 
-    // Fake login check. In a real app, do this on the server side.
     function login() {
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
-      // Demo credentials:
       if (username === 'EmpMo666' && password === 'LilithKolla21') {
         isAdmin = true;
         localStorage.setItem('isLoggedIn', 'true');
@@ -207,11 +152,9 @@
       isAdmin = false;
       localStorage.removeItem('isLoggedIn');
       checkAdmin();
-      // Re-fetch to hide Edit/Delete buttons
       fetchBlogEntries();
     }
 
-    // On page load, restore login state
     function checkLoginState() {
       if (localStorage.getItem('isLoggedIn') === 'true') {
         isAdmin = true;
@@ -219,7 +162,6 @@
       checkAdmin();
     }
 
-    // Fetch and render all blog entries
     function fetchBlogEntries() {
       fetch(API_URL)
         .then((response) => {
@@ -227,14 +169,12 @@
           return response.json();
         })
         .then((entries) => {
-          // Reverse so the newest appear first
           entries.reverse();
           renderBlogEntries(entries);
         })
         .catch((err) => console.error(err));
     }
 
-    // Render blog entries into the page
     function renderBlogEntries(entries) {
       const blogContainer = document.getElementById('blog-entries');
       blogContainer.innerHTML = '';
@@ -259,7 +199,6 @@
         `;
         blogContainer.innerHTML += entryHTML;
 
-        // Render any LaTeX inside each entry
         renderMathInElement(document.getElementById(`content-${entry.id}`), {
           delimiters: [
             { left: '$$', right: '$$', display: true },
@@ -270,7 +209,6 @@
       });
     }
 
-    // Open the form for adding a new entry or editing an existing one
     function openBlogForm(entryId = null) {
       editingEntryId = entryId;
       const formTitle = entryId ? 'Edit Blog Entry' : 'Add Blog Entry';
@@ -293,8 +231,8 @@
       }
     }
 
-    // Save a new or edited entry
     function saveEntry() {
+      console.log('🚀 saveEntry() called!');
       const title = document.getElementById('blog-title').value;
       const content = document.getElementById('blog-content').value;
       const entryId = document.getElementById('blog-entry-id').value;
@@ -309,14 +247,14 @@
           if (!response.ok) throw new Error('Failed to save entry');
           return response.json();
         })
-        .then(() => {
+        .then((newEntry) => {
+          console.log('💾 Insert succeeded:', newEntry);
           document.getElementById('blog-form').style.display = 'none';
           fetchBlogEntries();
         })
         .catch((err) => console.error(err));
     }
 
-    // Delete an entry
     function deleteEntry(entryId) {
       if (!confirm('Are you sure you want to delete this entry?')) return;
       fetch(`${API_URL}/${entryId}`, { method: 'DELETE' })
@@ -328,7 +266,6 @@
         .catch((err) => console.error(err));
     }
 
-    // Initialize on page load
     checkLoginState();
     fetchBlogEntries();
   </script>
