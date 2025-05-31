@@ -8,28 +8,15 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// === 1) ENABLE CORS AT THE TOP ===
-// This ensures preflight (OPTIONS) is handled automatically
-app.use(
-  cors({
-    // For development/demo, allow all origins:
-    origin: '*'
-    // In production, you might restrict to your front-end domain:
-    // origin: 'https://mohankolla.com'
-  })
-);
+// 1) Enable CORS on all routes (this handles OPTIONS preflight)
+app.use(cors({
+  origin: '*' // or ['https://mohankolla.com'] for a more restrictive CORS policy
+}));
 
-// === 2) PARSE JSON REQUEST BODIES ===
+// 2) Parse JSON bodies
 app.use(express.json());
 
-// === 3) SERVE STATIC FILES FROM `blog/` FOLDER ===
-// When someone visits '/', '/personal-blog.html', '/pageScript.bundle.js', etc.,
-// Express will look inside the `blog/` directory for those files.
-app.use(express.static(path.join(__dirname)));
-
-// === 4) CONFIGURE POSTGRES CONNECTION ===
-// Railway (or your env) should define the env var DATABASE_URL.
-// e.g. postgres://username:password@host:5432/dbname?sslmode=require
+// 3) Configure Postgres pool (Railway will set process.env.DATABASE_URL)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -37,7 +24,7 @@ const pool = new Pool({
   }
 });
 
-// Optional: Test the database connection on startup
+// Optional: sanity‐check Postgres connection on startup
 (async () => {
   try {
     const client = await pool.connect();
@@ -48,14 +35,10 @@ const pool = new Pool({
   }
 })();
 
-// === 5) EXPLICITLY HANDLE PRE-FLIGHT FOR /api/blog-entries ===
-// Because app.use(cors()) is already at the top, you technically don't need this.
-// But adding it explicitly ensures OPTIONS requests return the correct headers.
+// 4) Explicitly handle OPTIONS (redundant if app.use(cors()) is at the top)
 app.options('/api/blog-entries', cors());
 
-// === 6) DEFINE YOUR API ROUTES ===
-
-// GET all blog entries
+// 5) Define API routes
 app.get('/api/blog-entries', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM blog_entries ORDER BY id ASC');
@@ -66,7 +49,6 @@ app.get('/api/blog-entries', async (req, res) => {
   }
 });
 
-// GET a single blog entry by ID
 app.get('/api/blog-entries/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -82,17 +64,13 @@ app.get('/api/blog-entries/:id', async (req, res) => {
   }
 });
 
-// POST to create or update a blog entry
 app.post('/api/blog-entries', async (req, res) => {
   console.log('📝 POST /api/blog-entries body:', req.body);
   const { id, title, content } = req.body;
-  // If your table’s "date" column is TEXT, you can use a localized string.
-  // If it’s a DATE column, you might do: new Date().toISOString().slice(0,10);
   const currentDate = new Date().toLocaleDateString();
-
   try {
     if (id) {
-      // Attempt to update an existing entry
+      // Update existing:
       const updateResult = await pool.query(
         'UPDATE blog_entries SET title=$1, content=$2, date=$3 WHERE id=$4 RETURNING *',
         [title, content, currentDate, id]
@@ -100,10 +78,8 @@ app.post('/api/blog-entries', async (req, res) => {
       if (updateResult.rows.length > 0) {
         return res.json(updateResult.rows[0]);
       }
-      // If no row was updated (ID didn’t exist), fall through to insert
     }
-
-    // Insert a new blog entry
+    // Otherwise insert new:
     const insertResult = await pool.query(
       'INSERT INTO blog_entries (title, content, date) VALUES ($1, $2, $3) RETURNING *',
       [title, content, currentDate]
@@ -115,7 +91,6 @@ app.post('/api/blog-entries', async (req, res) => {
   }
 });
 
-// DELETE a blog entry by ID
 app.delete('/api/blog-entries/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -127,14 +102,13 @@ app.delete('/api/blog-entries/:id', async (req, res) => {
   }
 });
 
-// === 7) CATCH-ALL: For any other GET request, serve `personal-blog.html` ===
-// This makes sure that if someone visits /personal-blog.html or any other “unknown” route,
-// they get your blog’s front-end. Adjust if you have a different entry point.
+// 6) Serve static files (including personal-blog.html) from /blog
+app.use(express.static(path.join(__dirname)));
+
+// 7) Catch-all: send personal-blog.html for any other GET
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'personal-blog.html'));
 });
 
-// === 8) START THE SERVER ===
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// 8) Start the server
+app.listen(port, () => console.log(`Server running on port ${port}`));
