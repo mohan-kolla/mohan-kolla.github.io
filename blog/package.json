@@ -1,8 +1,9 @@
 {
-  "name": "my-blog-app",
+  "name": "my-blog-server",
   "version": "1.0.0",
+  "main": "server.js",
   "scripts": {
-    "start": "cd blog && node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
