@@ -84,7 +84,7 @@ app.get('/api/blog-entries/:id', async (req, res) => {
 // CREATE or UPDATE entry
 app.post('/api/blog-entries', async (req, res) => {
   console.log('📝 POST body:', req.body);
-  const { id, title, content, date } = req.body;
+  const { id, content, date } = req.body;
 
   // If user provided date, parse to ISO; otherwise use today's ISO date
   const isoDate = date
@@ -97,8 +97,8 @@ app.post('/api/blog-entries', async (req, res) => {
   try {
     if (id) {
       const u = await pool.query(
-        `UPDATE blog_entries SET title=$1, content=$2, date=$3 WHERE id=$4 RETURNING *`,
-        [title, content, isoDate, id]
+        `UPDATE blog_entries SET content=$1, date=$2 WHERE id=$3 RETURNING *`,
+        [content, isoDate, id]
       );
       if (u.rows.length) {
         const updated = u.rows[0];
@@ -107,8 +107,8 @@ app.post('/api/blog-entries', async (req, res) => {
       }
     }
     const i = await pool.query(
-      `INSERT INTO blog_entries (title,content,date) VALUES ($1,$2,$3) RETURNING *`,
-      [title, content, isoDate]
+      `INSERT INTO blog_entries (content, date) VALUES ($1, $2) RETURNING *`,
+      [content, isoDate]
     );
     const inserted = i.rows[0];
     inserted.date = responseDate;
