@@ -6,19 +6,18 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Enable CORS on all routes (handles OPTIONS preflight)
+// Enable CORS on all routes
 app.use(cors({ origin: '*' }));
-
 // Parse JSON bodies
 app.use(express.json());
 
-// Configure Postgres pool (Railway will set process.env.DATABASE_URL)
+// Postgres pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-// Helper: format a Date (or date-string) as MM/DD/YYYY
+// Format a Date (or date-string) as MM/DD/YYYY
 function formatDate(input) {
   const dt = new Date(input);
   const mm = String(dt.getMonth() + 1).padStart(2, '0');
@@ -27,22 +26,17 @@ function formatDate(input) {
   return `${mm}/${dd}/${yyyy}`;
 }
 
-// Helper: parse input date (MM/DD/YYYY or ISO YYYY-MM-DD) into ISO YYYY-MM-DD for DB
+// Parse MM/DD/YYYY or ISO YYYY-MM-DD into ISO YYYY-MM-DD
 function toISODate(input) {
   if (!input) return null;
-  // If input contains '/', assume MM/DD/YYYY
   if (input.includes('/')) {
     const [m, d, y] = input.split('/');
-    // pad month/day
-    const mm = m.padStart(2, '0');
-    const dd = d.padStart(2, '0');
-    return `${y}-${mm}-${dd}`;
+    return `${y.padStart(4,'0')}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
   }
-  // Otherwise assume ISO-like, take first 10 chars
   return input.slice(0, 10);
 }
 
-// Sanity-check Postgres connection on startup
+// Check Postgres connection
 (async () => {
   try {
     const client = await pool.connect();
@@ -53,10 +47,9 @@ function toISODate(input) {
   }
 })();
 
-// Explicitly handle OPTIONS for blog-entries
 app.options('/api/blog-entries', cors());
 
-// GET all blog entries (date formatted MM/DD/YYYY)
+// GET all entries
 app.get('/api/blog-entries', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM blog_entries ORDER BY id ASC');
@@ -66,94 +59,81 @@ app.get('/api/blog-entries', async (req, res) => {
     }));
     res.json(rows);
   } catch (err) {
-    console.error('Error fetching blog entries', err);
+    console.error('Error fetching entries', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// GET a single entry by id (date formatted MM/DD/YYYY)
+// GET one entry
 app.get('/api/blog-entries/:id', async (req, res) => {
-  const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM blog_entries WHERE id = $1', [id]);
-    if (result.rows.length > 0) {
+    const { id } = req.params;
+    const result = await pool.query('SELECT * FROM blog_entries WHERE id=$1', [id]);
+    if (result.rows.length) {
       const entry = result.rows[0];
       entry.date = formatDate(entry.date);
       return res.json(entry);
     }
     res.status(404).json({ error: 'Entry not found' });
   } catch (err) {
-    console.error('Error fetching blog entry', err);
+    console.error('Error fetching entry', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// CREATE or UPDATE an entry (accepts MM/DD/YYYY or ISO YYYY-MM-DD)
+// CREATE or UPDATE entry
 app.post('/api/blog-entries', async (req, res) => {
-  console.log('📝 POST /api/blog-entries body:', req.body);
+  console.log('📝 POST body:', req.body);
   const { id, title, content, date } = req.body;
 
-  // Convert client-supplied date into ISO for DB, or default to today
-  const isoDate = toISODate(date) || formatDate(new Date());
-  // DB date column expects YYYY-MM-DD
-  const dbDate = isoDate;
+  // If user provided date, parse to ISO; otherwise use today's ISO date
+  const isoDate = date
+    ? toISODate(date)
+    : new Date().toISOString().slice(0, 10);
 
-  // For response, we'll send back MM/DD/YYYY
-  const outDate = formatDate(dbDate);
+  // Format for response
+  const responseDate = formatDate(isoDate);
 
   try {
     if (id) {
-      const updateResult = await pool.query(
-        `UPDATE blog_entries
-         SET title   = $1,
-             content = $2,
-             date    = $3
-         WHERE id    = $4
-         RETURNING *`,
-        [title, content, dbDate, id]
+      const u = await pool.query(
+        `UPDATE blog_entries SET title=$1, content=$2, date=$3 WHERE id=$4 RETURNING *`,
+        [title, content, isoDate, id]
       );
-      if (updateResult.rows.length > 0) {
-        const updated = updateResult.rows[0];
-        updated.date = outDate;
+      if (u.rows.length) {
+        const updated = u.rows[0];
+        updated.date = responseDate;
         return res.json(updated);
       }
     }
-
-    const insertResult = await pool.query(
-      `INSERT INTO blog_entries (title, content, date)
-       VALUES ($1, $2, $3)
-       RETURNING *`,
-      [title, content, dbDate]
+    const i = await pool.query(
+      `INSERT INTO blog_entries (title,content,date) VALUES ($1,$2,$3) RETURNING *`,
+      [title, content, isoDate]
     );
-    const newEntry = insertResult.rows[0];
-    newEntry.date = outDate;
-    res.json(newEntry);
-
+    const inserted = i.rows[0];
+    inserted.date = responseDate;
+    res.json(inserted);
   } catch (err) {
-    console.error('Error saving blog entry', err);
+    console.error('Error saving entry', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// DELETE an entry
+// DELETE entry
 app.delete('/api/blog-entries/:id', async (req, res) => {
-  const { id } = req.params;
   try {
-    await pool.query('DELETE FROM blog_entries WHERE id = $1', [id]);
+    await pool.query('DELETE FROM blog_entries WHERE id=$1', [req.params.id]);
     res.json({ success: true });
   } catch (err) {
-    console.error('Error deleting blog entry', err);
+    console.error('Error deleting entry', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// Serve static files (including personal-blog.html)
+// Serve static
 app.use(express.static(path.join(__dirname)));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, 'personal-blog.html'))
+);
 
-// Catch-all: send personal-blog.html for any other GET
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'personal-blog.html'));
-});
-
-// Start the server
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server on port ${port}`));
