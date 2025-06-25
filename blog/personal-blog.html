@@ -80,8 +80,6 @@
       <div class="w3-center"><h3 id="form-title">Add Blog Entry</h3></div>
       <div class="w3-container">
         <input type="hidden" id="blog-entry-id" />
-        <label for="blog-title"><b>Title</b></label>
-        <input class="w3-input w3-border" type="text" placeholder="Enter Title" id="blog-title" required />
         <label for="blog-date"><b>Date</b></label>
         <input class="w3-input w3-border" type="date" id="blog-date"/>
         <label for="blog-content"><b>Content</b></label>
@@ -181,7 +179,6 @@
         const entryHTML = `
           <div class="w3-card-4 w3-margin w3-white">
             <div class="w3-container">
-              <h3>${entry.title}</h3>
               <h5>${entry.date}</h5>
             </div>
             <div class="w3-container">
@@ -231,7 +228,7 @@
 
     function saveEntry() {
       console.log('🚀 saveEntry() called!');
-      const title = document.getElementById('blog-title').value;
+      const date = document.getElementByID('blog-date').value;
       const content = document.getElementById('blog-content').value;
       const entryId = document.getElementById('blog-entry-id').value;
       const payload = entryId ? { id: entryId, title, content } : { title, content };
