@@ -18,13 +18,28 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-// Helper to format a Date (or date-string) as MM/DD/YYYY
+// Helper: format a Date (or date-string) as MM/DD/YYYY
 function formatDate(input) {
   const dt = new Date(input);
   const mm = String(dt.getMonth() + 1).padStart(2, '0');
   const dd = String(dt.getDate()).padStart(2, '0');
   const yyyy = dt.getFullYear();
   return `${mm}/${dd}/${yyyy}`;
+}
+
+// Helper: parse input date (MM/DD/YYYY or ISO YYYY-MM-DD) into ISO YYYY-MM-DD for DB
+function toISODate(input) {
+  if (!input) return null;
+  // If input contains '/', assume MM/DD/YYYY
+  if (input.includes('/')) {
+    const [m, d, y] = input.split('/');
+    // pad month/day
+    const mm = m.padStart(2, '0');
+    const dd = d.padStart(2, '0');
+    return `${y}-${mm}-${dd}`;
+  }
+  // Otherwise assume ISO-like, take first 10 chars
+  return input.slice(0, 10);
 }
 
 // Sanity-check Postgres connection on startup
@@ -73,15 +88,18 @@ app.get('/api/blog-entries/:id', async (req, res) => {
   }
 });
 
-// CREATE or UPDATE an entry (accepts user-supplied date MM/DD/YYYY or YYYY-MM-DD)
+// CREATE or UPDATE an entry (accepts MM/DD/YYYY or ISO YYYY-MM-DD)
 app.post('/api/blog-entries', async (req, res) => {
   console.log('📝 POST /api/blog-entries body:', req.body);
   const { id, title, content, date } = req.body;
 
-  // Use user-supplied date or default to today
-  const postDate = date
-    ? formatDate(date)
-    : formatDate(new Date());
+  // Convert client-supplied date into ISO for DB, or default to today
+  const isoDate = toISODate(date) || formatDate(new Date());
+  // DB date column expects YYYY-MM-DD
+  const dbDate = isoDate;
+
+  // For response, we'll send back MM/DD/YYYY
+  const outDate = formatDate(dbDate);
 
   try {
     if (id) {
@@ -92,11 +110,11 @@ app.post('/api/blog-entries', async (req, res) => {
              date    = $3
          WHERE id    = $4
          RETURNING *`,
-        [title, content, postDate, id]
+        [title, content, dbDate, id]
       );
       if (updateResult.rows.length > 0) {
         const updated = updateResult.rows[0];
-        updated.date = postDate;
+        updated.date = outDate;
         return res.json(updated);
       }
     }
@@ -105,10 +123,10 @@ app.post('/api/blog-entries', async (req, res) => {
       `INSERT INTO blog_entries (title, content, date)
        VALUES ($1, $2, $3)
        RETURNING *`,
-      [title, content, postDate]
+      [title, content, dbDate]
     );
     const newEntry = insertResult.rows[0];
-    newEntry.date = postDate;
+    newEntry.date = outDate;
     res.json(newEntry);
 
   } catch (err) {
