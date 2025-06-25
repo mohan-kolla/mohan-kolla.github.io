@@ -227,28 +227,35 @@
     }
 
     function saveEntry() {
-      console.log('🚀 saveEntry() called!');
-      const date = document.getElementByID('blog-date').value;
-      const content = document.getElementById('blog-content').value;
-      const entryId = document.getElementById('blog-entry-id').value;
-      const payload = entryId ? { id: entryId, title, content } : { title, content };
-
-      fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then((response) => {
-          if (!response.ok) throw new Error('Failed to save entry');
-          return response.json();
-        })
-        .then((newEntry) => {
-          console.log('💾 Insert succeeded:', newEntry);
-          document.getElementById('blog-form').style.display = 'none';
-          fetchBlogEntries();
-        })
-        .catch((err) => console.error(err));
+    const date = document.getElementById('blog-date').value;
+    const content = document.getElementById('blog-content').value;
+    const entryId = document.getElementById('blog-entry-id').value;
+    
+    if (!date || !content) {
+      alert('Please fill in both date and content');
+      return;
     }
+
+    const payload = entryId ? { id: entryId, content, date } : { content, date };
+
+    fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error('Failed to save entry');
+        return response.json();
+      })
+      .then((newEntry) => {
+        document.getElementById('blog-form').style.display = 'none';
+        fetchBlogEntries();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Error saving entry');
+      });
+  }
 
     function deleteEntry(entryId) {
       if (!confirm('Are you sure you want to delete this entry?')) return;
