@@ -204,27 +204,37 @@
       });
     }
 
-    function openBlogForm(entryId = null) {
-      editingEntryId = entryId;
-      const formTitle = entryId ? 'Edit Blog Entry' : 'Add Blog Entry';
-      document.getElementById('form-title').innerText = formTitle;
-      document.getElementById('blog-form').style.display = 'block';
+function openBlogForm(entryId = null) {
+  editingEntryId = entryId;
+  const formTitle = entryId ? 'Edit Blog Entry' : 'Add Blog Entry';
+  document.getElementById('form-title').innerText = formTitle;
+  document.getElementById('blog-form').style.display = 'block';
 
-      document.getElementById('blog-entry-id').value = entryId ? entryId : '';
+  // Clear the form first
+  document.getElementById('blog-date').value = '';
+  document.getElementById('blog-content').value = '';
+  document.getElementById('blog-entry-id').value = entryId || '';
 
-      if (entryId) {
-        fetch(`${API_URL}/${entryId}`)
-          .then((res) => res.json())
-          .then((entry) => {
-            document.getElementById('blog-title').value = entry.title;
-            document.getElementById('blog-content').value = entry.content;
-          })
-          .catch((err) => console.error(err));
-      } else {
-        document.getElementById('blog-title').value = '';
-        document.getElementById('blog-content').value = '';
-      }
-    }
+  if (entryId) {
+    fetch(`${API_URL}/${entryId}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch entry');
+        return res.json();
+      })
+      .then((entry) => {
+        // Format the date for the date input (YYYY-MM-DD)
+        const dateParts = entry.date.split('/');
+        const formattedDate = `${dateParts[2]}-${dateParts[0].padStart(2, '0')}-${dateParts[1].padStart(2, '0')}`;
+        
+        document.getElementById('blog-date').value = formattedDate;
+        document.getElementById('blog-content').value = entry.content;
+      })
+      .catch((err) => {
+        console.error('Error loading entry:', err);
+        alert('Error loading entry for editing');
+      });
+  }
+}
 
     function saveEntry() {
     const date = document.getElementById('blog-date').value;
