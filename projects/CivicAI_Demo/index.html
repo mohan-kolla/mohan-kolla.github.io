@@ -3,533 +3,177 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Editable AI Q&A UI Mockup</title>
+  <title>CivicAI – Decision Support Demo</title>
+
   <style>
     :root{
       --bg: #0b0f19;
       --panel: #0f172a;
-      --panel-2: #111c33;
       --stroke: rgba(255,255,255,.10);
       --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
-      --muted-2: rgba(255,255,255,.55);
-      --chip: rgba(255,255,255,.08);
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --muted: rgba(255,255,255,.65);
+      --accent: rgba(34,197,94,.95);
       --radius: 18px;
-      --radius-sm: 12px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      --accent: rgba(99,102,241,.95); /* subtle indigo */
-      --good: rgba(34,197,94,.9);
-      --warn: rgba(245,158,11,.95);
-      --bad: rgba(239,68,68,.95);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
     }
 
     *{ box-sizing: border-box; }
+
     body{
       margin:0;
+      padding:40px 20px;
       font-family: var(--sans);
-      background: radial-gradient(1200px 900px at 20% 10%, rgba(99,102,241,.18), transparent 55%),
-                  radial-gradient(900px 700px at 85% 40%, rgba(34,197,94,.12), transparent 55%),
+      background: radial-gradient(900px 600px at 20% 10%, rgba(34,197,94,.18), transparent 60%),
                   var(--bg);
       color: var(--text);
-      line-height: 1.45;
-      padding: 28px;
     }
 
-    .wrap{
-      max-width: 1020px;
+    .container{
+      max-width: 880px;
       margin: 0 auto;
-      display: grid;
-      gap: 16px;
-      grid-template-columns: 1.2fr .8fr;
-    }
-
-    @media (max-width: 980px){
-      .wrap{ grid-template-columns: 1fr; }
     }
 
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
       border: 1px solid var(--stroke);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .card-header{
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--stroke);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .title{
-      display:flex; align-items:center; gap:10px;
-      font-weight: 650;
-      letter-spacing: .2px;
+    .header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:18px 20px;
+      border-bottom:1px solid var(--stroke);
     }
 
     .dot{
-      width: 10px; height: 10px; border-radius: 50%;
+      width:10px;
+      height:10px;
+      border-radius:50%;
       background: var(--accent);
-      box-shadow: 0 0 0 4px rgba(99,102,241,.18);
+      box-shadow: 0 0 0 4px rgba(34,197,94,.18);
     }
 
-    .meta{
-      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;
-      font-size: 12px;
-      color: var(--muted-2);
+    .title{
+      font-weight:700;
+      letter-spacing:.2px;
+      font-size:18px;
     }
 
-    .chip{
-      border: 1px solid var(--stroke);
-      background: var(--chip);
-      border-radius: 999px;
-      padding: 6px 10px;
-      white-space: nowrap;
+    .subtitle{
+      font-size:13px;
+      color: var(--muted);
+      margin-left:auto;
     }
 
-    .card-body{ padding: 18px; }
+    .body{
+      padding:22px;
+      display:grid;
+      gap:22px;
+    }
 
     .section{
       display:grid;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap:10px;
     }
 
     .label{
-      font-size: 12px;
-      color: var(--muted-2);
-      display:flex; align-items:center; gap:8px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: var(--muted);
     }
 
     .bubble{
-      border: 1px solid var(--stroke);
+      border:1px solid var(--stroke);
       border-radius: var(--radius);
-      padding: 14px 14px;
-      background: rgba(255,255,255,.02);
-    }
-
-    .bubble.question{
-      font-family: var(--mono);
-      font-size: 13.5px;
-      background: rgba(255,255,255,.015);
-    }
-
-    .bubble.answer{
+      padding:16px;
       background: rgba(255,255,255,.03);
     }
 
-    .editable-hint{
-      font-size: 12px;
-      color: var(--muted-2);
-      margin-top: 6px;
-    }
-
-    /* contenteditable styling */
-    [contenteditable="true"]{
-      outline: none;
-    }
-    [contenteditable="true"]:focus{
-      box-shadow: 0 0 0 3px rgba(99,102,241,.22);
-      border-color: rgba(99,102,241,.55);
-    }
-
-    .toolbar{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      padding: 14px 18px;
-      border-top: 1px solid var(--stroke);
-      background: rgba(0,0,0,.12);
-      align-items:center;
-      justify-content: space-between;
-    }
-
-    .btns{ display:flex; gap: 10px; flex-wrap:wrap; }
-    button{
-      appearance:none;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-      transition: transform .05s ease, background .15s ease, border-color .15s ease;
-    }
-    button:hover{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.16);
-    }
-    button:active{ transform: translateY(1px); }
-
-    .note{
-      font-size: 12px;
-      color: var(--muted-2);
-    }
-
-    /* Visual output panel */
-    .visual-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 520px){
-      .visual-grid{ grid-template-columns: 1fr; }
-    }
-
-    .viz{
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.02);
-      overflow:hidden;
-      position: relative;
-      min-height: 140px;
-    }
-
-    .viz-head{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--stroke);
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .viz-body{
-      padding: 12px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .spark{
-      height: 58px;
-      border-radius: 12px;
-      border: 1px dashed rgba(255,255,255,.14);
-      background:
-        linear-gradient(90deg, rgba(99,102,241,.25), transparent 55%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      margin: 10px 0 0;
-      position: relative;
-      overflow:hidden;
-    }
-    .spark::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
-      transform: translateX(-60%);
-      animation: sweep 3.2s ease-in-out infinite;
-      opacity:.55;
-    }
-    @keyframes sweep{
-      0%{ transform: translateX(-60%); }
-      55%{ transform: translateX(120%); }
-      100%{ transform: translateX(120%); }
-    }
-
-    .kpis{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-    @media (max-width: 980px){
-      .kpis{ grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 520px){
-      .kpis{ grid-template-columns: 1fr; }
-    }
-
-    .kpi{
-      border: 1px solid var(--stroke);
-      border-radius: 16px;
-      padding: 12px;
-      background: rgba(255,255,255,.02);
-    }
-    .kpi .k-title{
-      font-size: 12px;
-      color: var(--muted-2);
-      display:flex; align-items:center; justify-content:space-between; gap:8px;
-    }
-    .badge{
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .kpi .k-val{
-      margin-top: 8px;
-      font-size: 18px;
-      font-weight: 750;
-      letter-spacing: .2px;
-      color: var(--text);
-    }
-
-    details{
-      margin-top: 14px;
-      border: 1px solid var(--stroke);
-      border-radius: 16px;
-      background: rgba(255,255,255,.02);
-      overflow:hidden;
-    }
-    summary{
-      cursor:pointer;
-      padding: 12px 14px;
-      color: var(--muted);
-      font-weight: 650;
-      list-style: none;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    .why{
-      padding: 0 14px 14px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .why ul{ margin: 10px 0 0; padding-left: 18px; }
-    .why li{ margin: 6px 0; }
-    code.inline{
+    .question{
       font-family: var(--mono);
-      font-size: 12px;
-      padding: 2px 6px;
-      border-radius: 8px;
-      border: 1px solid var(--stroke);
-      background: rgba(0,0,0,.25);
-      color: rgba(255,255,255,.85);
+      font-size:14px;
+      background: rgba(255,255,255,.02);
+    }
+
+    .answer{
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    .answer ul{
+      margin:8px 0 0;
+      padding-left:18px;
+    }
+
+    .answer li{
+      margin:6px 0;
+    }
+
+    .hint{
+      font-size:12px;
+      color: var(--muted);
+    }
+
+    [contenteditable="true"]{
+      outline:none;
+    }
+
+    [contenteditable="true"]:focus{
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(34,197,94,.25);
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <!-- Main Q&A panel -->
-    <section class="card" aria-label="AI Q&A UI Mockup">
-      <div class="card-header">
-        <div class="title">
-          <span class="dot" aria-hidden="true"></span>
-          <span>AI Q&amp;A Demo Frame</span>
-        </div>
-        <div class="meta">
-          <span class="chip">Editable</span>
-          <span class="chip">Pitch-ready</span>
-          <span class="chip">Static UI</span>
-        </div>
+  <div class="container">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="header">
+        <div class="dot"></div>
+        <div class="title">CivicAI – Decision Support Demo</div>
+        <div class="subtitle">Editable • Pitch-ready</div>
       </div>
 
-      <div class="card-body">
+      <!-- Content -->
+      <div class="body">
+
+        <!-- Question -->
         <div class="section">
-          <div class="label">Ask the system</div>
-          <div id="question" class="bubble question" contenteditable="true" spellcheck="false">
-            What areas are at highest risk of flooding in Miami this weekend, and why?
+          <div class="label">Ask CivicAI</div>
+          <div class="bubble question" contenteditable="true" spellcheck="false">
+            What issues should city officials prioritize in downtown Miami this week?
           </div>
-          <div class="editable-hint">Click the text to edit. Use this to swap in audience-specific questions.</div>
+          <div class="hint">Click to edit the question for different audiences.</div>
         </div>
 
+        <!-- Answer -->
         <div class="section">
-          <div class="label">Assistant response</div>
-          <div id="answer" class="bubble answer" contenteditable="true" spellcheck="true">
-            <div style="font-weight:700; margin-bottom:8px;">Summary</div>
-            <ul style="margin:0; padding-left:18px;">
-              <li><b>Coastal surge risk:</b> High near low-lying shoreline neighborhoods.</li>
-              <li><b>Rainfall-driven flooding:</b> Moderate in poor-drainage zones after heavy bursts.</li>
-              <li><b>Compound risk:</b> Elevated where high tide overlaps peak rainfall.</li>
-            </ul>
-            <div style="margin-top:10px; color: rgba(255,255,255,.72);">
-              Recommendation: prioritize monitoring in coastal flood-prone areas and deploy road-closure resources for known hotspots.
-            </div>
-          </div>
-          <div class="editable-hint">Keep this concise (3–5 bullets) so it reads well on slides.</div>
-        </div>
-
-        <details>
-          <summary>Why this answer was generated</summary>
-          <div class="why">
+          <div class="label">CivicAI Response</div>
+          <div class="bubble answer" contenteditable="true" spellcheck="true">
+            <strong>Summary</strong>
             <ul>
-              <li>Real-time and recent observations from <code class="inline">NOAA</code> and <code class="inline">USGS</code> style feeds.</li>
-              <li>Historical event patterns + geospatial context (low elevation, drainage, proximity to coast).</li>
-              <li>Temporal alignment of rainfall peaks with high-tide windows (compound flooding).</li>
+              <li><b>Public safety:</b> Increased risk in low-lying and high-traffic areas during peak hours.</li>
+              <li><b>Infrastructure strain:</b> Potential impacts to roads, drainage, and transit reliability.</li>
+              <li><b>Service coordination:</b> Overlap between weather conditions and scheduled city operations.</li>
             </ul>
+            <div style="margin-top:10px; color:rgba(255,255,255,.75);">
+              Recommendation: proactively coordinate transportation, public works, and emergency services in identified priority zones.
+            </div>
           </div>
-        </details>
+          <div class="hint">Keep responses to 3–5 bullets for slide readability.</div>
+        </div>
+
       </div>
-
-      <div class="toolbar">
-        <div class="btns">
-          <button id="btnCopy">Copy Q&amp;A</button>
-          <button id="btnReset">Reset example</button>
-          <button id="btnExport">Export PNG (Screenshot)</button>
-        </div>
-        <div class="note">
-          Tip: Use your browser’s zoom (e.g., 110–125%) before exporting for crisper images.
-        </div>
-      </div>
-    </section>
-
-    <!-- Visuals + KPIs panel -->
-    <aside class="card" aria-label="Visual Output Panel">
-      <div class="card-header">
-        <div class="title">
-          <span class="dot" aria-hidden="true" style="background: rgba(34,197,94,.95); box-shadow: 0 0 0 4px rgba(34,197,94,.16);"></span>
-          <span>Visual Output</span>
-        </div>
-        <div class="meta">
-          <span class="chip">Swap visuals</span>
-          <span class="chip">Optional</span>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <div class="visual-grid">
-          <div class="viz">
-            <div class="viz-head">
-              <span>Risk Map (placeholder)</span>
-              <span class="chip" style="padding:4px 8px;">Map</span>
-            </div>
-            <div class="viz-body">
-              Replace this panel with an image, map screenshot, or heatmap.
-              <div class="spark" aria-hidden="true"></div>
-            </div>
-          </div>
-
-          <div class="viz">
-            <div class="viz-head">
-              <span>Timeline (placeholder)</span>
-              <span class="chip" style="padding:4px 8px;">Chart</span>
-            </div>
-            <div class="viz-body">
-              Use a simple chart showing risk over time or forecast windows.
-              <div class="spark" aria-hidden="true"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="kpis">
-          <div class="kpi">
-            <div class="k-title">
-              <span>Overall Risk</span>
-              <span class="badge">High</span>
-            </div>
-            <div class="k-val">0.78</div>
-          </div>
-          <div class="kpi">
-            <div class="k-title">
-              <span>Key Driver</span>
-              <span class="badge">Coastal + Rain</span>
-            </div>
-            <div class="k-val">Compound</div>
-          </div>
-          <div class="kpi">
-            <div class="k-title">
-              <span>Last Updated</span>
-              <span class="badge">Live</span>
-            </div>
-            <div class="k-val">2 hours</div>
-          </div>
-        </div>
-
-        <div class="editable-hint" style="margin-top:10px;">
-          Want this to look more “ChatGPT-like”? Use two bubbles only and move visuals below the answer.
-        </div>
-      </div>
-    </aside>
+    </div>
   </div>
-
-  <script>
-    const DEFAULT_Q = "What areas are at highest risk of flooding in Miami this weekend, and why?";
-    const DEFAULT_A = `
-      <div style="font-weight:700; margin-bottom:8px;">Summary</div>
-      <ul style="margin:0; padding-left:18px;">
-        <li><b>Coastal surge risk:</b> High near low-lying shoreline neighborhoods.</li>
-        <li><b>Rainfall-driven flooding:</b> Moderate in poor-drainage zones after heavy bursts.</li>
-        <li><b>Compound risk:</b> Elevated where high tide overlaps peak rainfall.</li>
-      </ul>
-      <div style="margin-top:10px; color: rgba(255,255,255,.72);">
-        Recommendation: prioritize monitoring in coastal flood-prone areas and deploy road-closure resources for known hotspots.
-      </div>
-    `;
-
-    const qEl = document.getElementById("question");
-    const aEl = document.getElementById("answer");
-
-    // Copy Q&A to clipboard
-    document.getElementById("btnCopy").addEventListener("click", async () => {
-      const q = qEl.innerText.trim();
-      // answer: convert HTML to text with basic formatting
-      const tmp = document.createElement("div");
-      tmp.innerHTML = aEl.innerHTML;
-      const a = tmp.innerText.trim();
-
-      const payload = `Q: ${q}\n\nA:\n${a}\n`;
-      try {
-        await navigator.clipboard.writeText(payload);
-        toast("Copied Q&A to clipboard.");
-      } catch (e) {
-        // fallback
-        const ta = document.createElement("textarea");
-        ta.value = payload;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        toast("Copied (fallback).");
-      }
-    });
-
-    // Reset example
-    document.getElementById("btnReset").addEventListener("click", () => {
-      qEl.innerText = DEFAULT_Q;
-      aEl.innerHTML = DEFAULT_A;
-      toast("Reset to example content.");
-    });
-
-    // Export PNG (uses built-in screen capture via print-to-PDF fallback guidance)
-    document.getElementById("btnExport").addEventListener("click", async () => {
-      // Best-effort: use the Screen Capture API when available (Chrome/Edge)
-      // If unavailable, instruct user to use OS screenshot.
-      if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
-        toast("Tip: use your OS snipping tool for the cleanest export. Opening guidance…");
-      } else {
-        toast("Use your OS snipping tool (Win+Shift+S / Cmd+Shift+4) to capture this frame.");
-      }
-      // We keep it simple and dependable: "Export PNG" is effectively a guided screenshot.
-    });
-
-    // Minimal toast
-    function toast(msg){
-      const el = document.createElement("div");
-      el.textContent = msg;
-      el.style.position = "fixed";
-      el.style.left = "50%";
-      el.style.bottom = "22px";
-      el.style.transform = "translateX(-50%)";
-      el.style.padding = "10px 12px";
-      el.style.background = "rgba(0,0,0,.6)";
-      el.style.border = "1px solid rgba(255,255,255,.12)";
-      el.style.borderRadius = "12px";
-      el.style.color = "rgba(255,255,255,.9)";
-      el.style.fontWeight = "650";
-      el.style.fontSize = "13px";
-      el.style.boxShadow = "0 10px 30px rgba(0,0,0,.35)";
-      el.style.zIndex = "9999";
-      el.style.backdropFilter = "blur(10px)";
-      document.body.appendChild(el);
-      setTimeout(() => {
-        el.style.opacity = "0";
-        el.style.transition = "opacity .25s ease";
-      }, 1600);
-      setTimeout(() => el.remove(), 1950);
-    }
-  </script>
 </body>
 </html>
