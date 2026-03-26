@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_91c193679e784aa8a3f255f574b23c59 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_91c193679e784aa8a3f255f574b23c59" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_91c193679e784aa8a3f255f574b23c59 = L.map(
+                "map_91c193679e784aa8a3f255f574b23c59",
+                {
+                    center: [27.7, -83.5],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 7,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_61cdb3578bb461d747221dfd7b95ea77 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_61cdb3578bb461d747221dfd7b95ea77.addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+            var circle_marker_85ca5912b6264e5a390847e5f5ba7139 = L.circleMarker(
+                [30.671356, -81.46584],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 38, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_f985ce6789dc7f9994e274970212db3e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dee7b959a5d174db4a19868f8e8ea0a5 = $(`<div id="html_dee7b959a5d174db4a19868f8e8ea0a5" style="width: 100.0%; height: 100.0%;"><b>Fernandina Beach, FL</b><br>Storm Days: 16<br>Max Rain: 59.8mm<br>Max Wind: 10.7m/s<br><b>Max Surge Anomaly: 1.38m</b></div>`)[0];
+                popup_f985ce6789dc7f9994e274970212db3e.setContent(html_dee7b959a5d174db4a19868f8e8ea0a5);
+            
+        
+
+        circle_marker_85ca5912b6264e5a390847e5f5ba7139.bindPopup(popup_f985ce6789dc7f9994e274970212db3e)
+        ;
+
+        
+    
+    
+            var circle_marker_2111d2b75477ef88f4958344cabdf908 = L.circleMarker(
+                [30.398167, -81.42789],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 38, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_95a0d8609f97edd89e1df01148d37656 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_12ba5718da4f5f06a77c2e052a682d06 = $(`<div id="html_12ba5718da4f5f06a77c2e052a682d06" style="width: 100.0%; height: 100.0%;"><b>Mayport (Bar Pilots Dock), FL</b><br>Storm Days: 16<br>Max Rain: 89.2mm<br>Max Wind: 19.9m/s<br><b>Max Surge Anomaly: 1.20m</b></div>`)[0];
+                popup_95a0d8609f97edd89e1df01148d37656.setContent(html_12ba5718da4f5f06a77c2e052a682d06);
+            
+        
+
+        circle_marker_2111d2b75477ef88f4958344cabdf908.bindPopup(popup_95a0d8609f97edd89e1df01148d37656)
+        ;
+
+        
+    
+    
+            var circle_marker_137e2e06a26dafb32cbbdbd5978b92a3 = L.circleMarker(
+                [30.3867, -81.5583],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 38, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_8560761ab4dfa8f99517089799293e09 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6ff8931bf3065030f9ff74c2a984414f = $(`<div id="html_6ff8931bf3065030f9ff74c2a984414f" style="width: 100.0%; height: 100.0%;"><b>Dames Point, FL</b><br>Storm Days: 16<br>Max Rain: 72.5mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.08m</b></div>`)[0];
+                popup_8560761ab4dfa8f99517089799293e09.setContent(html_6ff8931bf3065030f9ff74c2a984414f);
+            
+        
+
+        circle_marker_137e2e06a26dafb32cbbdbd5978b92a3.bindPopup(popup_8560761ab4dfa8f99517089799293e09)
+        ;
+
+        
+    
+    
+            var circle_marker_51afbe6889a2e6c880088e50994a7ff8 = L.circleMarker(
+                [30.32, -81.6583],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 40, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_5cb792c0ad7e71ad9c8c978eef579768 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a8d1a315215336cd9cdfbd92a3885d48 = $(`<div id="html_a8d1a315215336cd9cdfbd92a3885d48" style="width: 100.0%; height: 100.0%;"><b>Southbank Riverwalk, St Johns River, FL</b><br>Storm Days: 17<br>Max Rain: 73.4mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 0.90m</b></div>`)[0];
+                popup_5cb792c0ad7e71ad9c8c978eef579768.setContent(html_a8d1a315215336cd9cdfbd92a3885d48);
+            
+        
+
+        circle_marker_51afbe6889a2e6c880088e50994a7ff8.bindPopup(popup_5cb792c0ad7e71ad9c8c978eef579768)
+        ;
+
+        
+    
+    
+            var circle_marker_45c5c2c97cd54a89a01d72dc4372ec0c = L.circleMarker(
+                [30.192417, -81.68889],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 46, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_0d0c4d086150f3089dba6c164fe8c7b6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c15fc7d2885c67ffacc2dae61fc880b2 = $(`<div id="html_c15fc7d2885c67ffacc2dae61fc880b2" style="width: 100.0%; height: 100.0%;"><b>I-295 Buckman Bridge, FL</b><br>Storm Days: 20<br>Max Rain: 82.1mm<br>Max Wind: 15.9m/s<br><b>Max Surge Anomaly: 0.90m</b></div>`)[0];
+                popup_0d0c4d086150f3089dba6c164fe8c7b6.setContent(html_c15fc7d2885c67ffacc2dae61fc880b2);
+            
+        
+
+        circle_marker_45c5c2c97cd54a89a01d72dc4372ec0c.bindPopup(popup_0d0c4d086150f3089dba6c164fe8c7b6)
+        ;
+
+        
+    
+    
+            var circle_marker_e9101eef8bb8d2ab15b8d63dd4c1ce32 = L.circleMarker(
+                [28.4158, -80.5931],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 28, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_2c464bffab12140c093272dbd2781e20 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6ba940c81510dac07b06d2a42858a73b = $(`<div id="html_6ba940c81510dac07b06d2a42858a73b" style="width: 100.0%; height: 100.0%;"><b>Trident Pier, Port Canaveral, FL</b><br>Storm Days: 11<br>Max Rain: 178.9mm<br>Max Wind: 11.0m/s<br><b>Max Surge Anomaly: 0.91m</b></div>`)[0];
+                popup_2c464bffab12140c093272dbd2781e20.setContent(html_6ba940c81510dac07b06d2a42858a73b);
+            
+        
+
+        circle_marker_e9101eef8bb8d2ab15b8d63dd4c1ce32.bindPopup(popup_2c464bffab12140c093272dbd2781e20)
+        ;
+
+        
+    
+    
+            var circle_marker_eba5a4b39b4007bb896dd90e38c360b1 = L.circleMarker(
+                [26.612778, -80.034164],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 40, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_2637e105e83054172b334f4c1b3fbd4e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_cf3e387de0fa7c3d238e0fb4930514cb = $(`<div id="html_cf3e387de0fa7c3d238e0fb4930514cb" style="width: 100.0%; height: 100.0%;"><b>Lake Worth Pier, Atlantic Ocean, FL</b><br>Storm Days: 17<br>Max Rain: 30.6mm<br>Max Wind: 18.0m/s<br><b>Max Surge Anomaly: 0.64m</b></div>`)[0];
+                popup_2637e105e83054172b334f4c1b3fbd4e.setContent(html_cf3e387de0fa7c3d238e0fb4930514cb);
+            
+        
+
+        circle_marker_eba5a4b39b4007bb896dd90e38c360b1.bindPopup(popup_2637e105e83054172b334f4c1b3fbd4e)
+        ;
+
+        
+    
+    
+            var circle_marker_224552e042a7cb7305fc4a691c6ca927 = L.circleMarker(
+                [26.081667, -80.11667],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 36, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_e73164b642420deddf941e34690dd554 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c428d393cb6265f9010e8428b13b3b08 = $(`<div id="html_c428d393cb6265f9010e8428b13b3b08" style="width: 100.0%; height: 100.0%;"><b>South Port Everglades, FL</b><br>Storm Days: 15<br>Max Rain: 20.8mm<br>Max Wind: 18.5m/s<br><b>Max Surge Anomaly: 0.59m</b></div>`)[0];
+                popup_e73164b642420deddf941e34690dd554.setContent(html_c428d393cb6265f9010e8428b13b3b08);
+            
+        
+
+        circle_marker_224552e042a7cb7305fc4a691c6ca927.bindPopup(popup_e73164b642420deddf941e34690dd554)
+        ;
+
+        
+    
+    
+            var circle_marker_009e0f66390f557d99df2fdf3344f7c1 = L.circleMarker(
+                [25.7314, -80.1618],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 30, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_bcedc03614bc44b7f54470b8e8d75ff9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1168084a2f11e1065f9a956b77612f69 = $(`<div id="html_1168084a2f11e1065f9a956b77612f69" style="width: 100.0%; height: 100.0%;"><b>Virginia Key, FL</b><br>Storm Days: 12<br>Max Rain: 58.0mm<br>Max Wind: 4.1m/s<br><b>Max Surge Anomaly: 0.52m</b></div>`)[0];
+                popup_bcedc03614bc44b7f54470b8e8d75ff9.setContent(html_1168084a2f11e1065f9a956b77612f69);
+            
+        
+
+        circle_marker_009e0f66390f557d99df2fdf3344f7c1.bindPopup(popup_bcedc03614bc44b7f54470b8e8d75ff9)
+        ;
+
+        
+    
+    
+            var circle_marker_1075b6d980f797ac2d24cfb3eee7a209 = L.circleMarker(
+                [24.711, -81.1065],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 26, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_494bf6951be74862901598ad7092fad8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_27f5292002d555a915d7c47a7f520628 = $(`<div id="html_27f5292002d555a915d7c47a7f520628" style="width: 100.0%; height: 100.0%;"><b>Vaca Key, Florida Bay, FL</b><br>Storm Days: 10<br>Max Rain: 100.9mm<br>Max Wind: 8.7m/s<br><b>Max Surge Anomaly: 0.36m</b></div>`)[0];
+                popup_494bf6951be74862901598ad7092fad8.setContent(html_27f5292002d555a915d7c47a7f520628);
+            
+        
+
+        circle_marker_1075b6d980f797ac2d24cfb3eee7a209.bindPopup(popup_494bf6951be74862901598ad7092fad8)
+        ;
+
+        
+    
+    
+            var circle_marker_a4d50e689caf06ac06eb4b76c1df0a67 = L.circleMarker(
+                [24.5557, -81.8079],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 38, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_53aaf0644870122457ab547bf4506542 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2337d26ad0223f95e9a701a18bdaa929 = $(`<div id="html_2337d26ad0223f95e9a701a18bdaa929" style="width: 100.0%; height: 100.0%;"><b>Key West, FL</b><br>Storm Days: 16<br>Max Rain: 80.3mm<br>Max Wind: 11.7m/s<br><b>Max Surge Anomaly: 0.49m</b></div>`)[0];
+                popup_53aaf0644870122457ab547bf4506542.setContent(html_2337d26ad0223f95e9a701a18bdaa929);
+            
+        
+
+        circle_marker_a4d50e689caf06ac06eb4b76c1df0a67.bindPopup(popup_53aaf0644870122457ab547bf4506542)
+        ;
+
+        
+    
+    
+            var circle_marker_16beafec7070b50ed18d3fb59cdf0a7c = L.circleMarker(
+                [26.1367, -81.7883],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 44, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_4bf63093d9ed7bf75697ff31ae3eac66 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_765344b684987b9b0a09d4fb2700d327 = $(`<div id="html_765344b684987b9b0a09d4fb2700d327" style="width: 100.0%; height: 100.0%;"><b>NAPLES BAY, NORTH, FL</b><br>Storm Days: 19<br>Max Rain: 69.1mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.40m</b></div>`)[0];
+                popup_4bf63093d9ed7bf75697ff31ae3eac66.setContent(html_765344b684987b9b0a09d4fb2700d327);
+            
+        
+
+        circle_marker_16beafec7070b50ed18d3fb59cdf0a7c.bindPopup(popup_4bf63093d9ed7bf75697ff31ae3eac66)
+        ;
+
+        
+    
+    
+            var circle_marker_671e4ac15df239be6c3f0470a0de3905 = L.circleMarker(
+                [26.647778, -81.87111],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 40, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_435d297e98b3bcd819ffc71978441961 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7e12a44c4edeacedaa639cf145877259 = $(`<div id="html_7e12a44c4edeacedaa639cf145877259" style="width: 100.0%; height: 100.0%;"><b>Fort Myers, FL</b><br>Storm Days: 17<br>Max Rain: 2.4mm<br>Max Wind: 21.4m/s<br><b>Max Surge Anomaly: 1.63m</b></div>`)[0];
+                popup_435d297e98b3bcd819ffc71978441961.setContent(html_7e12a44c4edeacedaa639cf145877259);
+            
+        
+
+        circle_marker_671e4ac15df239be6c3f0470a0de3905.bindPopup(popup_435d297e98b3bcd819ffc71978441961)
+        ;
+
+        
+    
+    
+            var circle_marker_d089c8f8fdb50abfc268abe9ab80c3fd = L.circleMarker(
+                [27.6387, -82.5621],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 34, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_12b818e543783751524a4a623a341c56 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f03e5b37996899ed4c2a21a00ca254af = $(`<div id="html_f03e5b37996899ed4c2a21a00ca254af" style="width: 100.0%; height: 100.0%;"><b>Port Manatee, FL</b><br>Storm Days: 14<br>Max Rain: 173.6mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.11m</b></div>`)[0];
+                popup_12b818e543783751524a4a623a341c56.setContent(html_f03e5b37996899ed4c2a21a00ca254af);
+            
+        
+
+        circle_marker_d089c8f8fdb50abfc268abe9ab80c3fd.bindPopup(popup_12b818e543783751524a4a623a341c56)
+        ;
+
+        
+    
+    
+            var circle_marker_5ed3821151349e2c4298ca4f4087f584 = L.circleMarker(
+                [27.7606, -82.6269],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 44, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_27d532e11761c2b56861aeeb0d6cbd96 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dd0782f4c1bfcb412c23137b359a3865 = $(`<div id="html_dd0782f4c1bfcb412c23137b359a3865" style="width: 100.0%; height: 100.0%;"><b>St. Petersburg, FL</b><br>Storm Days: 19<br>Max Rain: 16.6mm<br>Max Wind: 20.2m/s<br><b>Max Surge Anomaly: 2.07m</b></div>`)[0];
+                popup_27d532e11761c2b56861aeeb0d6cbd96.setContent(html_dd0782f4c1bfcb412c23137b359a3865);
+            
+        
+
+        circle_marker_5ed3821151349e2c4298ca4f4087f584.bindPopup(popup_27d532e11761c2b56861aeeb0d6cbd96)
+        ;
+
+        
+    
+    
+            var circle_marker_9aab9ca1c2922816a1922d02b9a64e14 = L.circleMarker(
+                [27.8578, -82.5528],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 42, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_7b37d628a4c59975df6c9d2d8e624404 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_24adeeb9007674df9ab727f2ddf3804c = $(`<div id="html_24adeeb9007674df9ab727f2ddf3804c" style="width: 100.0%; height: 100.0%;"><b>Old Port Tampa, FL</b><br>Storm Days: 18<br>Max Rain: 18.1mm<br>Max Wind: 20.3m/s<br><b>Max Surge Anomaly: 2.27m</b></div>`)[0];
+                popup_7b37d628a4c59975df6c9d2d8e624404.setContent(html_24adeeb9007674df9ab727f2ddf3804c);
+            
+        
+
+        circle_marker_9aab9ca1c2922816a1922d02b9a64e14.bindPopup(popup_7b37d628a4c59975df6c9d2d8e624404)
+        ;
+
+        
+    
+    
+            var circle_marker_bba647bd96e59fe8f853bd772eec96b6 = L.circleMarker(
+                [27.9231, -82.4214],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 36, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_ef42243414abfaf1c670e737b6904b98 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ecf1f2442692c244ec565869497bb5eb = $(`<div id="html_ecf1f2442692c244ec565869497bb5eb" style="width: 100.0%; height: 100.0%;"><b>East Bay, FL</b><br>Storm Days: 15<br>Max Rain: 164.9mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.29m</b></div>`)[0];
+                popup_ef42243414abfaf1c670e737b6904b98.setContent(html_ecf1f2442692c244ec565869497bb5eb);
+            
+        
+
+        circle_marker_bba647bd96e59fe8f853bd772eec96b6.bindPopup(popup_ef42243414abfaf1c670e737b6904b98)
+        ;
+
+        
+    
+    
+            var circle_marker_86791a655f92490f3f04320f5316faf7 = L.circleMarker(
+                [27.978333, -82.831665],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 44, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_94ce378e0bbc0dda4b759a636751929f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f1637c68e103849ae3ff854a67a3ee24 = $(`<div id="html_f1637c68e103849ae3ff854a67a3ee24" style="width: 100.0%; height: 100.0%;"><b>Clearwater Beach, FL</b><br>Storm Days: 19<br>Max Rain: 29.1mm<br>Max Wind: 24.5m/s<br><b>Max Surge Anomaly: 2.24m</b></div>`)[0];
+                popup_94ce378e0bbc0dda4b759a636751929f.setContent(html_f1637c68e103849ae3ff854a67a3ee24);
+            
+        
+
+        circle_marker_86791a655f92490f3f04320f5316faf7.bindPopup(popup_94ce378e0bbc0dda4b759a636751929f)
+        ;
+
+        
+    
+    
+            var circle_marker_a06fc8f3af805d382f5a659b2fad6736 = L.circleMarker(
+                [29.135, -83.0317],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 48, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_749e818257ddcf2b2f226f735ad58d3d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_aa5dc01bea54fddce067d04f710b74b5 = $(`<div id="html_aa5dc01bea54fddce067d04f710b74b5" style="width: 100.0%; height: 100.0%;"><b>Cedar Key, FL</b><br>Storm Days: 21<br>Max Rain: 137.4mm<br>Max Wind: 27.1m/s<br><b>Max Surge Anomaly: 3.20m</b></div>`)[0];
+                popup_749e818257ddcf2b2f226f735ad58d3d.setContent(html_aa5dc01bea54fddce067d04f710b74b5);
+            
+        
+
+        circle_marker_a06fc8f3af805d382f5a659b2fad6736.bindPopup(popup_749e818257ddcf2b2f226f735ad58d3d)
+        ;
+
+        
+    
+    
+            var circle_marker_6bf539846f15aebee17e4ead08cdcf1e = L.circleMarker(
+                [29.724445, -84.98055],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 50, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_4da3c82ade4d503d2e7b7a0f6326a3ab = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6136deb500cf911ee1809124bdd26f57 = $(`<div id="html_6136deb500cf911ee1809124bdd26f57" style="width: 100.0%; height: 100.0%;"><b>Apalachicola, FL</b><br>Storm Days: 22<br>Max Rain: 81.8mm<br>Max Wind: 16.1m/s<br><b>Max Surge Anomaly: 1.38m</b></div>`)[0];
+                popup_4da3c82ade4d503d2e7b7a0f6326a3ab.setContent(html_6136deb500cf911ee1809124bdd26f57);
+            
+        
+
+        circle_marker_6bf539846f15aebee17e4ead08cdcf1e.bindPopup(popup_4da3c82ade4d503d2e7b7a0f6326a3ab)
+        ;
+
+        
+    
+    
+            var circle_marker_1d359f5088cfe490122671217da4dd54 = L.circleMarker(
+                [30.149723, -85.664444],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 48, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_c094588ccb066046aa92f8d787c789a4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_80b3fa03f1e07a9e183ec41a6c2ede24 = $(`<div id="html_80b3fa03f1e07a9e183ec41a6c2ede24" style="width: 100.0%; height: 100.0%;"><b>Panama City, FL</b><br>Storm Days: 21<br>Max Rain: 255.4mm<br>Max Wind: 9.2m/s<br><b>Max Surge Anomaly: 0.68m</b></div>`)[0];
+                popup_c094588ccb066046aa92f8d787c789a4.setContent(html_80b3fa03f1e07a9e183ec41a6c2ede24);
+            
+        
+
+        circle_marker_1d359f5088cfe490122671217da4dd54.bindPopup(popup_c094588ccb066046aa92f8d787c789a4)
+        ;
+
+        
+    
+    
+            var circle_marker_87c2a22021a224c56ffadabf5976136b = L.circleMarker(
+                [30.21375, -85.878586],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 54, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_117016d50e64a80610688fe8793917f2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ca94397740b37ead2d9607c07387e64b = $(`<div id="html_ca94397740b37ead2d9607c07387e64b" style="width: 100.0%; height: 100.0%;"><b>Panama City Beach, FL</b><br>Storm Days: 24<br>Max Rain: 188.0mm<br>Max Wind: 7.7m/s<br><b>Max Surge Anomaly: 0.73m</b></div>`)[0];
+                popup_117016d50e64a80610688fe8793917f2.setContent(html_ca94397740b37ead2d9607c07387e64b);
+            
+        
+
+        circle_marker_87c2a22021a224c56ffadabf5976136b.bindPopup(popup_117016d50e64a80610688fe8793917f2)
+        ;
+
+        
+    
+    
+            var circle_marker_94abfb7c8719deaa86a00403befa7f60 = L.circleMarker(
+                [30.4044, -87.2112],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 56, "stroke": true, "weight": 3}
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
+        
+    
+        var popup_5e245ba0d1bb213e123d958d21323375 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f49afadd056bc99434eedec7aacbb9ce = $(`<div id="html_f49afadd056bc99434eedec7aacbb9ce" style="width: 100.0%; height: 100.0%;"><b>Pensacola, FL</b><br>Storm Days: 25<br>Max Rain: 137.9mm<br>Max Wind: 6.5m/s<br><b>Max Surge Anomaly: 0.62m</b></div>`)[0];
+                popup_5e245ba0d1bb213e123d958d21323375.setContent(html_f49afadd056bc99434eedec7aacbb9ce);
+            
+        
+
+        circle_marker_94abfb7c8719deaa86a00403befa7f60.bindPopup(popup_5e245ba0d1bb213e123d958d21323375)
+        ;
+
+        
+    
+</script>
+</html>
