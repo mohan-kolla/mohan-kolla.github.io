@@ -1,34 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1QYBJ45BRR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-1QYBJ45BRR');
 </script>
 <title>Mohan Kolla</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mohan Kolla: data scientist and software engineer. CV, skills, research, and projects.">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
 <style>
-html,body,h1,h2,h3,h4,h5,h6 {
-  font-family: Alice;        
-    /* Add a black background color to the top navigation */
+html, body, h1, h2, h3, h4, h5, h6 {
+  font-family: Alice, Georgia, serif;
+}
+
+/* Top navigation */
 .topnav {
   background-color: #333;
   overflow: hidden;
 }
-
-/* Style the links inside the navigation bar */
 .topnav a {
   float: left;
   color: #f2f2f2;
@@ -37,60 +36,93 @@ html,body,h1,h2,h3,h4,h5,h6 {
   text-decoration: none;
   font-size: 17px;
 }
-
-/* Change the color of links on hover */
 .topnav a:hover {
   background-color: #ddd;
   color: black;
 }
-
-/* Add a color to the active/current link */
 .topnav a.active {
-  background-color: #04AA6D;
+  background-color: #4CAF50;
   color: white;
 }
-  }
+
+/* Skills */
+.skill-group { margin: 0 0 14px; }
+.skill-group h6 { margin: 0 0 6px; font-weight: bold; color: #555; }
+.skill-group .w3-tag {
+  margin: 0 4px 6px 0;
+  font-size: 13px;
+  background-color: #eef7ee;
+  color: #2e6b30;
+  border: 1px solid #cfe6cf;
+}
+
+/* Entries */
+.entry h5 { margin: 4px 0; }
+.entry h6 { margin: 2px 0 6px; }
+.entry ul { margin: 6px 0 4px; padding-left: 20px; }
+.entry li { margin-bottom: 4px; }
+.section-card { padding-bottom: 8px; }
+a.inline { color: #2e7d32; }
 </style>
 </head>
 <body class="w3-light-grey">
 <div class="topnav">
-  <a href="index.html">Home</a>
+  <a class="active" href="index.html">Home</a>
   <a href="projects/current-projects.html">Current Projects</a>
   <a href="blog/personal-blog.html">Personal Blog</a>
 </div>
 
 <!-- Page Container -->
 <div class="w3-content w3-margin-top" style="max-width:1400px;">
-
-  <!-- The Grid -->
   <div class="w3-row-padding">
-  
+
     <!-- Left Column -->
     <div class="w3-third">
-    
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
-          <img src="https://i.ibb.co/n33CKtf/headshot-resized.jpg" style="width:100%" alt="Avatar">
+          <img src="https://i.ibb.co/n33CKtf/headshot-resized.jpg" style="width:100%" alt="Headshot of Mohan Kolla">
           <div class="w3-display-bottomleft w3-container w3-large w3-text-white">
             <h2>Mohan Kolla</h2>
           </div>
         </div>
         <div class="w3-container">
-          <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-green"></i>Data Scientist</p>
-          <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-green"></i>Miami, FL</p>
-          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-green"></i>mokolla21@gmail.com</p>
+          <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-green"></i>Data Scientist &amp; Software Engineer</p>
+          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-green"></i><a class="inline" href="mailto:mokolla21@gmail.com">mokolla21@gmail.com</a></p>
+          <p><i class="fa fa-linkedin fa-fw w3-margin-right w3-large w3-text-green"></i><a class="inline" href="https://www.linkedin.com/in/mohan-kolla-1b428524b/" target="_blank">LinkedIn</a></p>
+          <p><i class="fa fa-github fa-fw w3-margin-right w3-large w3-text-green"></i><a class="inline" href="https://github.com/mohan-kolla" target="_blank">github.com/mohan-kolla</a></p>
           <hr>
 
           <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-green"></i>Skills</b></p>
-          <p>Java</p>
-          <p>Javascript</p>
-          <p>AWS Cloud Services</p>
-          <p>Python</p>
-          <p>Scrum</p>
-          <p>Agile</p>
-          <p>PyTorch</p>
-          <p>Machine Learning Algorithms</p>
-          <p>Neural Networks</p>
+
+          <div class="skill-group">
+            <h6>Programming Languages</h6>
+            <span class="w3-tag w3-round">Python</span><span class="w3-tag w3-round">JavaScript</span><span class="w3-tag w3-round">SQL</span><span class="w3-tag w3-round">Java</span><span class="w3-tag w3-round">C#</span><span class="w3-tag w3-round">R</span><span class="w3-tag w3-round">MATLAB</span><span class="w3-tag w3-round">HTML/CSS</span>
+          </div>
+
+          <div class="skill-group">
+            <h6>Frameworks &amp; Libraries</h6>
+            <span class="w3-tag w3-round">React</span><span class="w3-tag w3-round">Node.js</span><span class="w3-tag w3-round">Express.js</span><span class="w3-tag w3-round">Bootstrap</span><span class="w3-tag w3-round">PyTorch</span><span class="w3-tag w3-round">Scikit-learn</span><span class="w3-tag w3-round">Pandas</span><span class="w3-tag w3-round">NumPy</span><span class="w3-tag w3-round">Statsmodels</span><span class="w3-tag w3-round">Matplotlib</span><span class="w3-tag w3-round">Seaborn</span><span class="w3-tag w3-round">Gradio</span>
+          </div>
+
+          <div class="skill-group">
+            <h6>AI &amp; Machine Learning</h6>
+            <span class="w3-tag w3-round">Retrieval-Augmented Generation (RAG)</span><span class="w3-tag w3-round">Multimodal Retrieval</span><span class="w3-tag w3-round">LLM Application Development</span><span class="w3-tag w3-round">Vision-Language Models</span><span class="w3-tag w3-round">Prompt Engineering</span><span class="w3-tag w3-round">Neural Networks</span><span class="w3-tag w3-round">Machine Learning Algorithms</span><span class="w3-tag w3-round">Model Evaluation &amp; Benchmarking</span><span class="w3-tag w3-round">Regression &amp; Statistical Modeling</span>
+          </div>
+
+          <div class="skill-group">
+            <h6>Data Engineering &amp; Analytics</h6>
+            <span class="w3-tag w3-round">ETL/ELT Pipelines</span><span class="w3-tag w3-round">Data Ingestion</span><span class="w3-tag w3-round">Data Warehousing</span><span class="w3-tag w3-round">Relational Database Design</span><span class="w3-tag w3-round">Geospatial SQL</span><span class="w3-tag w3-round">ArcGIS (arcpy)</span><span class="w3-tag w3-round">Power BI</span><span class="w3-tag w3-round">Tableau</span><span class="w3-tag w3-round">Data Visualization</span>
+          </div>
+
+          <div class="skill-group">
+            <h6>Cloud, Tools &amp; Platforms</h6>
+            <span class="w3-tag w3-round">AWS</span><span class="w3-tag w3-round">Docker</span><span class="w3-tag w3-round">Git/GitHub</span><span class="w3-tag w3-round">Linux</span><span class="w3-tag w3-round">REST APIs</span><span class="w3-tag w3-round">OpenAI API</span><span class="w3-tag w3-round">Hugging Face</span><span class="w3-tag w3-round">GPU / HPC Computing</span><span class="w3-tag w3-round">conda</span><span class="w3-tag w3-round">Weights &amp; Biases</span>
+          </div>
+
+          <div class="skill-group">
+            <h6>Practices</h6>
+            <span class="w3-tag w3-round">Agile</span><span class="w3-tag w3-round">Scrum</span><span class="w3-tag w3-round">System Design</span><span class="w3-tag w3-round">Pipeline Automation</span><span class="w3-tag w3-round">Testing &amp; Validation</span><span class="w3-tag w3-round">Technical Documentation</span><span class="w3-tag w3-round">Technical Presentations</span>
+          </div>
           <br>
 
           <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-green"></i>Languages</b></p>
@@ -100,79 +132,127 @@ html,body,h1,h2,h3,h4,h5,h6 {
           <br>
         </div>
       </div><br>
-
-    <!-- End Left Column -->
     </div>
+    <!-- End Left Column -->
 
     <!-- Right Column -->
     <div class="w3-twothird">
 
-      <div class="w3-container w3-card w3-white" style="padding:8px;">
-  <h2 class="w3-text-grey" style="margin:0; padding-bottom:8px;">
-    <i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Education
-  </h2>
-  <div class="w3-container" style="padding:0;">
-    <h5 class="w3-opacity" style="margin:4px 0;">
-      <b>Master of Science in Data Science and Artificial Intelligence</b>
-    </h5>
-    <h6 class="w3-text-green" style="margin:2px 0;">
-      <i class="fa fa-calendar fa-fw w3-margin-right"></i>2023 - Present
-    </h6>
-    <p style="margin:2px 0;">Florida International University</p>
-
-    <h5 class="w3-opacity" style="margin:10px 0 4px;">
-      <b>Bachelor of Science in Biochemistry</b>
-    </h5>
-    <h6 class="w3-text-green" style="margin:2px 0;">
-      <i class="fa fa-calendar fa-fw w3-margin-right"></i>2017 - 2021
-    </h6>
-    <p style="margin:2px 0;">University of Florida</p>
-  </div>
-</div>
-
-
-
-       <div class="w3-container w3-card w3-white w3-margin-bottom">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Work Experience</h2>
-         <div class="w3-container">
-          <h5 class="w3-opacity"><b>Graduate Research Assistant / Florida International University</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>August 2024 - <span class="w3-tag w3-green w3-round">Current</span></h6>
-          <p>I’m currently leading a project focused on developing an explainable, multimodal Hypercube-RAG framework for compound flood alerting. My role involves designing and implementing data ingestion pipelines, integrating diverse hydrometeorological datasets (including satellite precipitation, radar rainfall, and tide gauge measurements), and aligning them within a shared spatiotemporal hypercube architecture. I conduct exploratory data analysis, architect retrieval configurations, and evaluate system performance on a custom Compound Flooding QA benchmark to enhance semantic grounding and real-world relevance. I presented my findings to the i-Guide team (https://i-guide.io/), highlighting how multimodal grounding dramatically improves retrieval quality and supports future real-time, explainable alerting capabilities. This work combines applied machine learning, geoscience data fusion, and scalable retrieval systems to advance early warning solutions for compound flooding risk.</p>
+      <!-- Education -->
+      <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Education</h2>
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Master of Science in Data Science and Artificial Intelligence</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2023 - 2026</h6>
+          <p>Florida International University, Miami, FL</p>
           <hr>
         </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Academic Tutor / On Point Tutoring</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>November 2023 - <span class="w3-tag w3-green w3-round">Current</span></h6>
-          <p>As an experienced tutor and instructor, I developed a strong ability to break down complex quantitative concepts into understandable components. I excel at creating personalized learning plans tailored to each student's needs, promoting comprehension of advanced mathematical, statistical, and programming principles. Through hands-on tutoring across disciplines like calculus, regression modeling, machine learning, and coding, I guide students in building analytical skills and technical proficiencies required for data science and quantitative fields. I conducted training seminars focused on developing effective teaching methodologies, imparting knowledge clearly and impactfully. My instructional expertise positions me to thrive in roles demanding ability to interpret and communicate intricate data principles to technical and non-technical audiences.</p>
-          <hr>
-        </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Medical Transcriptionist / Quest Diagnostics</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i> October 2022  - May 2023</h6>
-          <p>I adeptly transcribed and documented dermatology pathology reports using Quest's proprietary software, ensuring accuracy and thoroughness. My expertise encompasses comprehensive understanding of medical terminology, diagnostic procedures, and dermatological conditions. I efficiently converted audio dictations into clear, concise written reports, leveraging proficiency to deliver high-quality documentation consistently.</p>
-          <hr>
-        </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Medical Assistant / Mendez Medical Center</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>August 2021 - March 2022</h6>
-          <p>Experienced in maintaining precise electronic health records and databases within medical settings. Adept at manipulating complex data sets, leveraging statistical modeling and machine learning techniques for analysis. Proficient in data visualization to clearly communicate quantitative insights. Strong grasp of data integrity principles and quality assurance protocols. Proven ability to interpret and explain technical data concepts across interdisciplinary clinical teams. Background in streamlining administrative medical workflows.</p><br>
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Bachelor of Science in Biochemistry</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2017 - 2021</h6>
+          <p>University of Florida, Gainesville, FL</p>
         </div>
       </div>
 
-    <!-- End Right Column -->
-    </div>
-    
-  <!-- End Grid -->
-  </div>
-  
-  <!-- End Page Container -->
-</div>
+      <!-- Work Experience -->
+      <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Work Experience</h2>
 
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Graduate Research Assistant / Florida International University, Robotics &amp; Spatial AI Lab</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>August 2024 - September 2026</h6>
+          <ul>
+            <li>Led development of MHyCube-RAG, an explainable multimodal Hypercube-RAG framework for compound flood reasoning and alerting.</li>
+            <li>Designed and implemented data ingestion pipelines integrating NASA IMERG satellite precipitation, NOAA MRMS radar rainfall, and NOAA CO-OPS tide gauge data into a shared spatiotemporal hypercube architecture.</li>
+            <li>Processed and integrated 50GB+ of structured and unstructured multi-source data, using Python, geospatial SQL, and ArcGIS (arcpy) for spatial data work.</li>
+            <li>Built a custom compound flooding QA benchmark and ran a six-way retrieval comparison (hypercube, dense, BM25, FLARE, GraphRAG, and fusion multimodal), validating 96% correctness and 94.7% completeness against ground truth.</li>
+            <li>Deployed the MarineGPT vision-language model on a shared A100 GPU server and built automated pipelines for marine image capture and captioning.</li>
+            <li>Presented findings to the NSF-supported i-GUIDE team and at the i-GUIDE conference in Chicago.</li>
+          </ul>
+          <hr>
+        </div>
+
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Academic Tutor / On Point Tutoring</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>November 2023 - <span class="w3-tag w3-green w3-round">Current</span></h6>
+          <ul>
+            <li>Tutor students one-on-one in calculus, regression modeling, machine learning, and programming, with learning plans tailored to each student.</li>
+            <li>Break complex quantitative concepts into clear, understandable steps for technical and non-technical learners.</li>
+            <li>Led training seminars on effective teaching methods for other tutors.</li>
+          </ul>
+          <hr>
+        </div>
+
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Inventory &amp; Catering Support / Bawarchi Biryanis</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2024 - <span class="w3-tag w3-green w3-round">Current</span></h6>
+          <ul>
+            <li>Designed and built a SQL data warehouse consolidating the restaurant's spreadsheet-based inventory and sales records.</li>
+            <li>Wrote Python ETL scripts and built a Power BI dashboard used to model food costs, plan catering orders, and reduce food waste during seasonal peaks.</li>
+          </ul>
+          <hr>
+        </div>
+
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Medical Transcriptionist / Quest Diagnostics</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>October 2022 - May 2023</h6>
+          <ul>
+            <li>Transcribed and documented dermatology pathology reports using Quest's proprietary software, converting audio dictations into accurate, detailed written reports.</li>
+          </ul>
+          <hr>
+        </div>
+
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Medical Assistant / Mendez Medical Center</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>August 2021 - March 2022</h6>
+          <ul>
+            <li>Worked directly with patients, handling intake and taking vitals at the start of each visit.</li>
+            <li>Maintained accurate electronic health records and supported clinical staff in a team environment.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Research & Presentations -->
+      <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-flask fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Research &amp; Presentations</h2>
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>MHyCube-RAG: An Integrated Multimodal RAG Architecture for Compound Flood Reasoning</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>IEEE ICTAI 2026 (conference paper submission)</h6>
+          <p>Shows that sensor-grounded multimodal retrieval answers predictive spatiotemporal flood questions that text retrieval alone cannot.</p>
+          <hr>
+        </div>
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Poster Presentation, i-GUIDE Conference</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>August 2026, University of Illinois Chicago</h6>
+          <p>Presented the MHyCube-RAG framework at the NSF-supported Institute for Geospatial Understanding through an Integrative Discovery Environment conference.</p>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-check-circle fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Certifications</h2>
+        <div class="w3-container entry">
+          <ul>
+            <li>AWS Certified Cloud Practitioner</li>
+            <li>Databricks: AI in the Flow of Data Engineering</li>
+            <li>PCEP: Certified Entry-Level Python Programmer</li>
+            <li>Microsoft Azure Data Engineer Associate (in progress)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <!-- End Right Column -->
+
+  </div>
+</div>
+<!-- End Page Container -->
 
 <footer class="w3-container w3-green w3-center w3-margin-top">
   <p>Find me on social media.</p>
-  <a href="https://www.instagram.com/mohankrishna.kolla/" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i></a> 
-  <a href="https://www.linkedin.com/in/mohan-kolla-1b428524b/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i></a> 
+  <a href="https://www.instagram.com/mohankrishna.kolla/" target="_blank" aria-label="Instagram"><i class="fa fa-instagram w3-hover-opacity"></i></a>
+  <a href="https://www.linkedin.com/in/mohan-kolla-1b428524b/" target="_blank" aria-label="LinkedIn"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
+  <a href="https://github.com/mohan-kolla" target="_blank" aria-label="GitHub"><i class="fa fa-github w3-hover-opacity"></i></a>
 </footer>
 
 </body>
