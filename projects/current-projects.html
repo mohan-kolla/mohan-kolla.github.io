@@ -73,6 +73,21 @@
       font-size: 14px;
       color: #555;
     }
+    /* Project with more than one link: plain title plus a row of smaller links */
+    .projects-list li .project-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    .projects-list li .project-links a {
+      display: inline-block;
+      margin-right: 18px;
+      font-size: 14px;
+      color: #04AA6D;
+    }
+    .projects-list li .project-links a .fa {
+      margin-right: 4px;
+    }
   </style>
 </head>
 <body class="w3-light-grey">
@@ -98,8 +113,12 @@
                 <p>An clear overview of all storm events that took place in Florida during 2024, highlighting key areas prone to flooding.</p>
               </li>
               <li>
-                <a href="https://mohan-kolla.github.io/projects/Kolla_Capstone_Final_Report.pdf" target="_blank">Application of Hypercube-RAG in Compound Flooding</a>
-                <p>An early look at my progress in applying a cutting edge method to LLM alert generation for the enviroment.</p>
+                <span class="project-title">Application of Hypercube-RAG in Compound Flooding</span>
+                <p>My research applying a multimodal Hypercube-RAG framework to LLM-generated compound flood alerts, grounded in satellite, radar, and tide gauge data.</p>
+                <div class="project-links">
+                  <a href="https://mohan-kolla.github.io/projects/Kolla_Capstone_Final_Report.pdf" target="_blank" rel="noopener"><i class="fa fa-file-pdf-o"></i>Research Report (PDF)</a>
+                  <a href="https://github.com/FIU-MoRA-Lab/Hypercube-RAG-FIU" target="_blank" rel="noopener"><i class="fa fa-github"></i>Code on GitHub</a>
+                </div>
               </li>
               <li>
                 <a href="https://mohan-kolla.github.io/projects/Data_Analytics_Final_Project.pdf" target="_blank">Statistical Analysis of Retail Energy Sales in the U.S.</a>
