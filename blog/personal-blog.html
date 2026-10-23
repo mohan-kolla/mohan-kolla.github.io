@@ -70,18 +70,16 @@
     <div id="blog-entries" class="w3-container"></div>
   </div>
 
-  <!-- Login Modal (client-side demo only; move auth server-side for production) -->
+  <!-- Login Modal: token is verified server-side on write requests -->
   <div id="login-form" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width: 600px;">
       <span onclick="document.getElementById('login-form').style.display='none'" class="w3-button w3-display-topright">&times;</span>
       <div class="w3-center"><h3>Admin Login</h3></div>
       <div class="w3-container">
-        <label for="username"><b>Username</b></label>
-        <input class="w3-input w3-border" type="text" placeholder="Enter Username" id="username" required />
-        <label for="password"><b>Password</b></label>
-        <input class="w3-input w3-border" type="password" placeholder="Enter Password" id="password" required />
+        <label for="admin-token"><b>Admin token</b></label>
+        <input class="w3-input w3-border" type="password" placeholder="Enter admin token" id="admin-token" autocomplete="current-password" required />
         <button class="w3-button w3-block w3-green w3-section w3-padding" onclick="login()">Login</button>
-        <p class="w3-small w3-text-grey">Note: client-side login is only for demo. Implement server-side auth for production.</p>
+        <p class="w3-small w3-text-grey">The token is checked by the server on every save or delete.</p>
       </div>
     </div>
   </div>
@@ -118,7 +116,7 @@
     src="https://cdn.jsdelivr.net/npm/katex@0.16.23/dist/contrib/auto-render.min.js"
     integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
 
   <script>
@@ -168,33 +166,59 @@
       logoutBtn.style.display = isAdmin ? 'block' : 'none';
     }
 
+    // The token is never stored in this file. It lives in sessionStorage,
+    // which clears when the tab closes, and the server checks it on every write.
+    const TOKEN_KEY = 'blogAdminToken';
+
+    function getToken() {
+      try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch { return ''; }
+    }
+
+    function authHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+      };
+    }
+
     function login() {
-      // NOTE: This is only a demo client-side check. Replace with server auth.
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-      if (username === 'EmpMo666' && password === 'LilithKolla21') {
-        isAdmin = true;
-        localStorage.setItem('isLoggedIn', 'true');
-        document.getElementById('login-form').style.display = 'none';
-        checkAdmin();
-        fetchBlogEntries();
-      } else {
-        alert('Invalid credentials');
-      }
+      const token = document.getElementById('admin-token').value.trim();
+      if (!token) { alert('Enter the admin token.'); return; }
+      try { sessionStorage.setItem(TOKEN_KEY, token); } catch {}
+      document.getElementById('admin-token').value = '';
+      isAdmin = true;
+      document.getElementById('login-form').style.display = 'none';
+      checkAdmin();
+      fetchBlogEntries();
     }
 
     function logout() {
       isAdmin = false;
-      localStorage.removeItem('isLoggedIn');
+      try { sessionStorage.removeItem(TOKEN_KEY); } catch {}
+      localStorage.removeItem('isLoggedIn'); // clears the old flag from the previous version
       checkAdmin();
       fetchBlogEntries();
     }
 
     function checkLoginState() {
-      if (localStorage.getItem('isLoggedIn') === 'true') {
-        isAdmin = true;
-      }
+      isAdmin = Boolean(getToken());
       checkAdmin();
+    }
+
+    // A rejected token means the user is not really an admin.
+    function handleAuthError(err) {
+      if (/HTTP 401|HTTP 403/.test(err.message)) {
+        logout();
+        alert('Your admin token was rejected. Please log in again.');
+        return true;
+      }
+      return false;
+    }
+
+    function escapeHtml(text) {
+      return String(text ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[c]);
     }
 
     // ====== CRUD ======
@@ -219,7 +243,7 @@
         const card = `
           <div class="w3-card-4 w3-margin w3-white">
             <div class="w3-container">
-              <h5>${entry.date}</h5>
+              <h5>${escapeHtml(entry.date)}</h5>
             </div>
             <div class="w3-container">
               <div id="content-${entry.id}">${safeHtml}</div>
@@ -289,7 +313,7 @@
 
         await fetchJSON(url, {
           method,
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders(),
           body: JSON.stringify(payload)
         });
 
@@ -297,6 +321,7 @@
         fetchBlogEntries();
       } catch (err) {
         console.error(err);
+        if (handleAuthError(err)) return;
         alert(`Error saving entry:\n${err.message}`);
       }
     }
@@ -304,10 +329,11 @@
     async function deleteEntry(entryId) {
       if (!confirm('Are you sure you want to delete this entry?')) return;
       try {
-        await fetchJSON(`${API_URL}/${entryId}`, { method: 'DELETE' });
+        await fetchJSON(`${API_URL}/${entryId}`, { method: 'DELETE', headers: authHeaders() });
         fetchBlogEntries();
       } catch (err) {
         console.error(err);
+        if (handleAuthError(err)) return;
         alert(`Error deleting entry:\n${err.message}`);
       }
     }
