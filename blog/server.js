@@ -1,21 +1,45 @@
 const express = require('express');
 const cors = require('cors');
+const crypto = require('crypto');
 const { Pool } = require('pg');
 const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Enable CORS on all routes
-app.use(cors({ origin: '*' }));
+// Only your own sites may call this API from a browser.
+const ALLOWED_ORIGINS = [
+  'https://mohankolla.com',
+  'https://www.mohankolla.com',
+  'https://mohan-kolla.github.io'
+];
+app.use(cors({ origin: ALLOWED_ORIGINS }));
 // Parse JSON bodies
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 
 // Postgres pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
+
+// Rejects any write request that does not carry the correct admin token.
+// Set ADMIN_TOKEN in Railway's Variables tab. If it is missing, all writes are refused.
+function requireAdmin(req, res, next) {
+  const expected = process.env.ADMIN_TOKEN;
+  if (!expected) {
+    console.error('ADMIN_TOKEN is not set; refusing write request');
+    return res.status(503).json({ error: 'Writes are disabled' });
+  }
+  const header = req.get('Authorization') || '';
+  const provided = header.startsWith('Bearer ') ? header.slice(7) : '';
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+}
 
 // Format a Date (or date-string) as MM/DD/YYYY
 function formatDate(input) {
@@ -46,8 +70,6 @@ function toISODate(input) {
     console.error('❌ Failed to connect to Postgres:', err.message);
   }
 })();
-
-app.options('/api/blog-entries', cors());
 
 // GET all entries
 app.get('/api/blog-entries', async (req, res) => {
@@ -81,46 +103,57 @@ app.get('/api/blog-entries/:id', async (req, res) => {
   }
 });
 
-// CREATE or UPDATE entry
-app.post('/api/blog-entries', async (req, res) => {
-  console.log('📝 POST body:', req.body);
-  const { id, content, date } = req.body;
+// CREATE entry
+app.post('/api/blog-entries', requireAdmin, async (req, res) => {
+  const { content, date } = req.body;
+  if (!content || !content.trim()) {
+    return res.status(400).json({ error: 'Content is required' });
+  }
 
-  // If user provided date, parse to ISO; otherwise use today's ISO date
-  const isoDate = date
-    ? toISODate(date)
-    : new Date().toISOString().slice(0, 10);
-
-  // Format for response
-  const responseDate = formatDate(isoDate);
+  const isoDate = date ? toISODate(date) : new Date().toISOString().slice(0, 10);
 
   try {
-    if (id) {
-      const u = await pool.query(
-        `UPDATE blog_entries SET content=$1, date=$2 WHERE id=$3 RETURNING *`,
-        [content, isoDate, id]
-      );
-      if (u.rows.length) {
-        const updated = u.rows[0];
-        updated.date = responseDate;
-        return res.json(updated);
-      }
-    }
     const i = await pool.query(
       `INSERT INTO blog_entries (content, date) VALUES ($1, $2) RETURNING *`,
       [content, isoDate]
     );
     const inserted = i.rows[0];
-    inserted.date = responseDate;
-    res.json(inserted);
+    inserted.date = formatDate(isoDate);
+    res.status(201).json(inserted);
   } catch (err) {
     console.error('Error saving entry', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+// UPDATE entry (the blog page sends PUT when editing)
+app.put('/api/blog-entries/:id', requireAdmin, async (req, res) => {
+  const { content, date } = req.body;
+  if (!content || !content.trim()) {
+    return res.status(400).json({ error: 'Content is required' });
+  }
+
+  const isoDate = date ? toISODate(date) : new Date().toISOString().slice(0, 10);
+
+  try {
+    const u = await pool.query(
+      `UPDATE blog_entries SET content=$1, date=$2 WHERE id=$3 RETURNING *`,
+      [content, isoDate, req.params.id]
+    );
+    if (!u.rows.length) {
+      return res.status(404).json({ error: 'Entry not found' });
+    }
+    const updated = u.rows[0];
+    updated.date = formatDate(isoDate);
+    res.json(updated);
+  } catch (err) {
+    console.error('Error updating entry', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // DELETE entry
-app.delete('/api/blog-entries/:id', async (req, res) => {
+app.delete('/api/blog-entries/:id', requireAdmin, async (req, res) => {
   try {
     await pool.query('DELETE FROM blog_entries WHERE id=$1', [req.params.id]);
     res.json({ success: true });
