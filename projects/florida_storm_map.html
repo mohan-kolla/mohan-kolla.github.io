@@ -3,6 +3,7 @@
 <head>
     
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Florida Storm Events 2024 - Mohan Kolla</title>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -79,14 +80,13 @@
         
     
             var tile_layer_61cdb3578bb461d747221dfd7b95ea77 = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
                 {
   "minZoom": 0,
-  "maxZoom": 20,
-  "maxNativeZoom": 20,
+  "maxZoom": 16,
+  "maxNativeZoom": 16,
   "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
-  "subdomains": "abcd",
+  "attribution": "Tiles \u0026copy; Esri, HERE, Garmin, \u0026copy; OpenStreetMap contributors",
   "detectRetina": false,
   "tms": false,
   "opacity": 1,
@@ -96,6 +96,12 @@
         
     
             tile_layer_61cdb3578bb461d747221dfd7b95ea77.addTo(map_91c193679e784aa8a3f255f574b23c59);
+
+            // City and place labels drawn above the gray base map
+            L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+                { "maxZoom": 16, "maxNativeZoom": 16 }
+            ).addTo(map_91c193679e784aa8a3f255f574b23c59);
         
     
             var circle_marker_85ca5912b6264e5a390847e5f5ba7139 = L.circleMarker(
@@ -156,7 +162,7 @@
 
         
             
-                var html_6ff8931bf3065030f9ff74c2a984414f = $(`<div id="html_6ff8931bf3065030f9ff74c2a984414f" style="width: 100.0%; height: 100.0%;"><b>Dames Point, FL</b><br>Storm Days: 16<br>Max Rain: 72.5mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.08m</b></div>`)[0];
+                var html_6ff8931bf3065030f9ff74c2a984414f = $(`<div id="html_6ff8931bf3065030f9ff74c2a984414f" style="width: 100.0%; height: 100.0%;"><b>Dames Point, FL</b><br>Storm Days: 16<br>Max Rain: 72.5mm<br>Max Wind: N/A<br><b>Max Surge Anomaly: 1.08m</b></div>`)[0];
                 popup_8560761ab4dfa8f99517089799293e09.setContent(html_6ff8931bf3065030f9ff74c2a984414f);
             
         
@@ -179,7 +185,7 @@
 
         
             
-                var html_a8d1a315215336cd9cdfbd92a3885d48 = $(`<div id="html_a8d1a315215336cd9cdfbd92a3885d48" style="width: 100.0%; height: 100.0%;"><b>Southbank Riverwalk, St Johns River, FL</b><br>Storm Days: 17<br>Max Rain: 73.4mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 0.90m</b></div>`)[0];
+                var html_a8d1a315215336cd9cdfbd92a3885d48 = $(`<div id="html_a8d1a315215336cd9cdfbd92a3885d48" style="width: 100.0%; height: 100.0%;"><b>Southbank Riverwalk, St Johns River, FL</b><br>Storm Days: 17<br>Max Rain: 73.4mm<br>Max Wind: N/A<br><b>Max Surge Anomaly: 0.90m</b></div>`)[0];
                 popup_5cb792c0ad7e71ad9c8c978eef579768.setContent(html_a8d1a315215336cd9cdfbd92a3885d48);
             
         
@@ -363,7 +369,7 @@
 
         
             
-                var html_765344b684987b9b0a09d4fb2700d327 = $(`<div id="html_765344b684987b9b0a09d4fb2700d327" style="width: 100.0%; height: 100.0%;"><b>NAPLES BAY, NORTH, FL</b><br>Storm Days: 19<br>Max Rain: 69.1mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.40m</b></div>`)[0];
+                var html_765344b684987b9b0a09d4fb2700d327 = $(`<div id="html_765344b684987b9b0a09d4fb2700d327" style="width: 100.0%; height: 100.0%;"><b>NAPLES BAY, NORTH, FL</b><br>Storm Days: 19<br>Max Rain: 69.1mm<br>Max Wind: N/A<br><b>Max Surge Anomaly: 1.40m</b></div>`)[0];
                 popup_4bf63093d9ed7bf75697ff31ae3eac66.setContent(html_765344b684987b9b0a09d4fb2700d327);
             
         
@@ -409,7 +415,7 @@
 
         
             
-                var html_f03e5b37996899ed4c2a21a00ca254af = $(`<div id="html_f03e5b37996899ed4c2a21a00ca254af" style="width: 100.0%; height: 100.0%;"><b>Port Manatee, FL</b><br>Storm Days: 14<br>Max Rain: 173.6mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.11m</b></div>`)[0];
+                var html_f03e5b37996899ed4c2a21a00ca254af = $(`<div id="html_f03e5b37996899ed4c2a21a00ca254af" style="width: 100.0%; height: 100.0%;"><b>Port Manatee, FL</b><br>Storm Days: 14<br>Max Rain: 173.6mm<br>Max Wind: N/A<br><b>Max Surge Anomaly: 1.11m</b></div>`)[0];
                 popup_12b818e543783751524a4a623a341c56.setContent(html_f03e5b37996899ed4c2a21a00ca254af);
             
         
@@ -478,7 +484,7 @@
 
         
             
-                var html_ecf1f2442692c244ec565869497bb5eb = $(`<div id="html_ecf1f2442692c244ec565869497bb5eb" style="width: 100.0%; height: 100.0%;"><b>East Bay, FL</b><br>Storm Days: 15<br>Max Rain: 164.9mm<br>Max Wind: nanm/s<br><b>Max Surge Anomaly: 1.29m</b></div>`)[0];
+                var html_ecf1f2442692c244ec565869497bb5eb = $(`<div id="html_ecf1f2442692c244ec565869497bb5eb" style="width: 100.0%; height: 100.0%;"><b>East Bay, FL</b><br>Storm Days: 15<br>Max Rain: 164.9mm<br>Max Wind: N/A<br><b>Max Surge Anomaly: 1.29m</b></div>`)[0];
                 popup_ef42243414abfaf1c670e737b6904b98.setContent(html_ecf1f2442692c244ec565869497bb5eb);
             
         
