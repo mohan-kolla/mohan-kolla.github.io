@@ -62,6 +62,8 @@ html, body, h1, h2, h3, h4, h5, h6 {
 .entry ul { margin: 6px 0 4px; padding-left: 20px; }
 .entry li { margin-bottom: 4px; }
 .section-card { padding-bottom: 8px; }
+.other-list { list-style: none; padding-left: 0 !important; }
+.other-list li { margin-bottom: 8px; }
 a.inline { color: #2e7d32; }
 </style>
 </head>
@@ -138,76 +140,32 @@ a.inline { color: #2e7d32; }
     <!-- Right Column -->
     <div class="w3-twothird">
 
-      <!-- Education -->
+      <!-- Engineering & Research Experience -->
       <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Education</h2>
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-code fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Engineering &amp; Research Experience</h2>
+
         <div class="w3-container entry">
-          <h5 class="w3-opacity"><b>Master of Science in Data Science and Artificial Intelligence</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2023 - 2026</h6>
-          <p>Florida International University, Miami, FL</p>
+          <h5 class="w3-opacity"><b>Data Systems Developer (Part-Time) / Bawarchi Biryanis</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2024 - <span class="w3-tag w3-green w3-round">Current</span></h6>
+          <p class="w3-small w3-text-grey" style="margin:0 0 6px;">Family-owned restaurant, Miami, FL</p>
+          <ul>
+            <li>Designed, built, and maintain the restaurant's inventory and sales data system, in active use by the business since 2024.</li>
+            <li>Built Python ETL pipelines that load spreadsheet-based inventory and sales records into a SQL data warehouse.</li>
+            <li>Built a Power BI reporting dashboard the business uses to model food costs, plan catering orders, and reduce food waste.</li>
+            <li>Support seasonal demand swings, with the heaviest use during holiday catering peaks.</li>
+          </ul>
           <hr>
         </div>
-        <div class="w3-container entry">
-          <h5 class="w3-opacity"><b>Bachelor of Science in Biochemistry</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2017 - 2021</h6>
-          <p>University of Florida, Gainesville, FL</p>
-        </div>
-      </div>
-
-      <!-- Work Experience -->
-      <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Work Experience</h2>
 
         <div class="w3-container entry">
           <h5 class="w3-opacity"><b>Graduate Research Assistant / Florida International University, Robotics &amp; Spatial AI Lab</b></h5>
           <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>August 2024 - September 2026</h6>
           <ul>
-            <li>Led development of MHyCube-RAG, an explainable multimodal Hypercube-RAG framework for compound flood reasoning and alerting.</li>
-            <li>Designed and implemented data ingestion pipelines integrating NASA IMERG satellite precipitation, NOAA MRMS radar rainfall, and NOAA CO-OPS tide gauge data into a shared spatiotemporal hypercube architecture.</li>
-            <li>Processed and integrated 50GB+ of structured and unstructured multi-source data, using Python, geospatial SQL, and ArcGIS (arcpy) for spatial data work.</li>
-            <li>Built a custom compound flooding QA benchmark and ran a six-way retrieval comparison (hypercube, dense, BM25, FLARE, GraphRAG, and fusion multimodal), validating 96% correctness and 94.7% completeness against ground truth.</li>
-            <li>Deployed the MarineGPT vision-language model on a shared A100 GPU server and built automated pipelines for marine image capture and captioning.</li>
-            <li>Presented findings to the NSF-supported i-GUIDE team and at the i-GUIDE conference in Chicago.</li>
-          </ul>
-          <hr>
-        </div>
-
-        <div class="w3-container entry">
-          <h5 class="w3-opacity"><b>Academic Tutor / On Point Tutoring</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>November 2023 - <span class="w3-tag w3-green w3-round">Current</span></h6>
-          <ul>
-            <li>Tutor students one-on-one in calculus, regression modeling, machine learning, and programming, with learning plans tailored to each student.</li>
-            <li>Break complex quantitative concepts into clear, understandable steps for technical and non-technical learners.</li>
-            <li>Led training seminars on effective teaching methods for other tutors.</li>
-          </ul>
-          <hr>
-        </div>
-
-        <div class="w3-container entry">
-          <h5 class="w3-opacity"><b>Inventory &amp; Catering Support / Bawarchi Biryanis</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2024 - <span class="w3-tag w3-green w3-round">Current</span></h6>
-          <ul>
-            <li>Designed and built a SQL data warehouse consolidating the restaurant's spreadsheet-based inventory and sales records.</li>
-            <li>Wrote Python ETL scripts and built a Power BI dashboard used to model food costs, plan catering orders, and reduce food waste during seasonal peaks.</li>
-          </ul>
-          <hr>
-        </div>
-
-        <div class="w3-container entry">
-          <h5 class="w3-opacity"><b>Medical Transcriptionist / Quest Diagnostics</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>October 2022 - May 2023</h6>
-          <ul>
-            <li>Transcribed and documented dermatology pathology reports using Quest's proprietary software, converting audio dictations into accurate, detailed written reports.</li>
-          </ul>
-          <hr>
-        </div>
-
-        <div class="w3-container entry">
-          <h5 class="w3-opacity"><b>Medical Assistant / Mendez Medical Center</b></h5>
-          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>August 2021 - March 2022</h6>
-          <ul>
-            <li>Worked directly with patients, handling intake and taking vitals at the start of each visit.</li>
-            <li>Maintained accurate electronic health records and supported clinical staff in a team environment.</li>
+            <li>Built the data ingestion and retrieval backend for MHyCube-RAG, a multimodal retrieval-augmented generation system for compound flood reasoning.</li>
+            <li>Engineered pipelines integrating NASA IMERG satellite precipitation, NOAA MRMS radar rainfall, and NOAA CO-OPS tide gauge data into a shared spatiotemporal data store, processing 50GB+ of structured and unstructured data.</li>
+            <li>Built an evaluation benchmark and ran a six-way retrieval comparison (hypercube, dense, BM25, FLARE, GraphRAG, and fusion multimodal), validating 96% correctness and 94.7% completeness against ground truth.</li>
+            <li>Deployed the MarineGPT vision-language model on shared A100 GPU servers and built pipelines that capture snapshots from 10 ocean livestreams every 5 minutes and caption them automatically, running unattended.</li>
+            <li>Reused the system's architecture for a second application in fisheries (FishRAG). Code: <a class="inline" href="https://github.com/FIU-MoRA-Lab/Hypercube-RAG-FIU" target="_blank" rel="noopener">FIU-MoRA-Lab/Hypercube-RAG-FIU</a>.</li>
           </ul>
         </div>
       </div>
@@ -228,6 +186,22 @@ a.inline { color: #2e7d32; }
         </div>
       </div>
 
+      <!-- Education -->
+      <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Education</h2>
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Master of Science in Data Science and Artificial Intelligence</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2023 - 2026</h6>
+          <p>Florida International University, Miami, FL</p>
+          <hr>
+        </div>
+        <div class="w3-container entry">
+          <h5 class="w3-opacity"><b>Bachelor of Science in Biochemistry</b></h5>
+          <h6 class="w3-text-green"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2017 - 2021</h6>
+          <p>University of Florida, Gainesville, FL</p>
+        </div>
+      </div>
+
       <!-- Certifications -->
       <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
         <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-check-circle fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Certifications</h2>
@@ -237,6 +211,18 @@ a.inline { color: #2e7d32; }
             <li>Databricks: AI in the Flow of Data Engineering</li>
             <li>PCEP: Certified Entry-Level Python Programmer</li>
             <li>Microsoft Azure Data Engineer Associate (in progress)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Other Experience -->
+      <div class="w3-container w3-card w3-white w3-margin-bottom section-card">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-green"></i>Other Experience</h2>
+        <div class="w3-container entry">
+          <ul class="other-list">
+            <li><b>Academic Tutor</b>, On Point Tutoring <span class="w3-text-grey">(November 2023 - Current)</span>: one-on-one tutoring in calculus, regression modeling, machine learning, and programming.</li>
+            <li><b>Medical Transcriptionist</b>, Quest Diagnostics <span class="w3-text-grey">(October 2022 - May 2023)</span></li>
+            <li><b>Medical Assistant</b>, Mendez Medical Center <span class="w3-text-grey">(August 2021 - March 2022)</span></li>
           </ul>
         </div>
       </div>
